@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -37,39 +38,5 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'androidx.databinding:viewbinding:7.4.1'
-
-    //Firebase
-    implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-auth:21.1.0'
-    implementation 'com.google.firebase:firebase-database:19.3.1'
-
-    // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
-
-    //New Material Design
-    implementation 'com.google.android.material:material:1.9.0-alpha01'
-
-    //RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.2.10"
-
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
-
-    implementation 'com.firebaseui:firebase-ui-database:0.4.1'
-
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
-
-    //noinspection GradleCompatible
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-    implementation 'com.firebaseui:firebase-ui-database:5.0.0' //add firebase ui recyclerview dependency
-    implementation 'com.google.android.material:material:1.2.0-alpha02'  //material design for RecycleView
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
 }
