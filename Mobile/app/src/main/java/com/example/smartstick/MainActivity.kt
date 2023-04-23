@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
+import com.example.smartstick.ui.auth.LoginFragment
+import com.example.smartstick.ui.auth.RegisterFragment
 import com.example.smartstick.ui.home.HomeHolderFragment
 import com.example.smartstick.ui.home.HomeRelativeFragment
 import com.example.smartstick.ui.profile.ProfileFragment
@@ -13,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val fragmentProfile = ProfileFragment()
     private val fragmentSearch = SearchFragment()
+    private val  fragmentRegister = RegisterFragment()
+    private val loginFragment =LoginFragment ()
     private val fragmentHomeRelative = HomeRelativeFragment()
     private val fragmentHomeHolder = HomeHolderFragment()
 
@@ -21,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //initSubView()
+        initSubView()
         addNavigationBottomListener()
 
     }
@@ -46,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun initSubView() {
-        addFragment(fragmentHomeHolder)
+        addFragment(fragmentRegister)
     }
     private fun replaceFragment(fragment : Fragment){
         val transaction = supportFragmentManager.beginTransaction()

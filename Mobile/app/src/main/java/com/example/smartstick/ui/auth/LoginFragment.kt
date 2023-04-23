@@ -5,15 +5,13 @@ import com.example.smartstick.databinding.FragmentLoginBinding
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
-    override val TAG: String
-        get() = TODO("Not yet implemented")
+    override val TAG: String =this::class.simpleName.toString()
 
-    override fun getViewBinding(): FragmentLoginBinding {
-        TODO("Not yet implemented")
-    }
+    override fun getViewBinding(): FragmentLoginBinding =
+        FragmentLoginBinding.inflate(layoutInflater)
 
     override fun setUp() {
-        TODO("Not yet implemented")
     }
+
 
 }
