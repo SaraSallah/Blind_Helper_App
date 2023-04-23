@@ -1,6 +1,7 @@
 package com.example.smartstick.ui.auth
 
 import android.util.Log
+import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentRegisterBinding
@@ -24,6 +25,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         FragmentRegisterBinding.inflate(layoutInflater)
 
     override fun setUp() {
+        (activity as MainActivity).hideBottomNavigationView()
         addCallBacks()
     }
 
