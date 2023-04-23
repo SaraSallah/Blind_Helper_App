@@ -12,7 +12,6 @@ abstract class BaseFragment<VB:ViewBinding> : Fragment() {
     abstract val TAG : String
     private var _binding : VB ?= null
     protected val binding get() = _binding!!
-
     abstract fun getViewBinding(): VB
 
     override fun onCreateView(
