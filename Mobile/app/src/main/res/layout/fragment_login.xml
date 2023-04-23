@@ -93,14 +93,13 @@
 
         </RadioGroup>
 
-
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_medium"
         android:background="@drawable/btn_shape"
-        android:text="@string/login_Page"
+        android:text="@string/sign_in"
         android:textAllCaps="false"
         android:textSize="@dimen/text_large"
         android:textColor="@color/white_100"
