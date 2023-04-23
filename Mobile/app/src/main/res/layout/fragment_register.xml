@@ -60,7 +60,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_signUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/spacing_medium"
@@ -80,13 +80,13 @@
             android:layout_marginTop="@dimen/spacing_giant"
             android:text="@string/havingAccount"
             android:textSize="@dimen/text_large"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/textView_signIn"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_signUp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView_signIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
