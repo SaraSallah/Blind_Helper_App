@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_email"
+            android:id="@+id/edit_text_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_giant"
@@ -39,7 +39,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/et_password"
+            android:id="@+id/edit_text_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/password"
@@ -48,7 +48,7 @@
             app:hintAnimationEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_email">
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/editTextStyle"
@@ -71,7 +71,7 @@
             android:textSize="@dimen/text_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_password" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
 
         <TextView
             android:id="@+id/do_not_have_account_tv"
