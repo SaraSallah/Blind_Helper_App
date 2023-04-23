@@ -2,6 +2,7 @@ package com.example.smartstick
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
 import com.example.smartstick.ui.auth.LoginFragment
@@ -48,6 +49,13 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+    fun showBottomNavigationView() {
+        binding.bottomNav.visibility = View.VISIBLE
+    }
+
+    fun hideBottomNavigationView() {
+        binding.bottomNav.visibility = View.GONE
     }
     private fun initSubView() {
         addFragment(fragmentRegister)
