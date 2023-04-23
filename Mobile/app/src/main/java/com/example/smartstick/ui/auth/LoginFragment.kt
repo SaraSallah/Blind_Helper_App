@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String =this::class.simpleName.toString()
 
-    private val  fragmentRegister = RegisterFragment()
+    private val fragmentRegister by lazy { RegisterFragment() }
 
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
