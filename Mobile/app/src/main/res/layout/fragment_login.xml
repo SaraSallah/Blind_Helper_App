@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
+            style="@style/editTextStyle"
             android:paddingVertical="@dimen/spacing_medium" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -53,19 +54,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            style="@style/editTextStyle"
             android:paddingVertical="@dimen/spacing_medium" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tv_forget_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_medium"
-        android:text="@string/forgotPassword"
-        android:textColor="@color/black_87"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        <RadioGroup
+            android:id="@+id/type_group"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/spacing_medium"
+            app:layout_constraintEnd_toEndOf="@+id/et_password"
+            app:layout_constraintStart_toStartOf="@+id/et_password"
+            app:layout_constraintTop_toBottomOf="@+id/et_password">
+
+            <RadioButton
+                android:id="@+id/relative_button"
+                android:layout_width="88dp"
+                android:layout_height="32dp"
+                android:layout_alignStart="@+id/type_group"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="72dp"
+                android:layout_marginBottom="8dp"
+                android:text="Relative" />
+
+            <RadioButton
+                android:id="@+id/holder_button"
+                android:layout_width="88dp"
+                android:layout_height="32dp"
+                android:layout_alignEnd="@+id/type_group"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Holder" />
+
+        </RadioGroup>
+
 
     <Button
         android:id="@+id/btn_login"
@@ -76,10 +103,10 @@
         android:text="@string/login_Page"
         android:textAllCaps="false"
         android:textSize="@dimen/text_large"
-        app:backgroundTint="@null"
+        android:textColor="@color/white_100"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_forget_password" />
+        app:layout_constraintTop_toBottomOf="@+id/type_group" />
 
     <TextView
         android:id="@+id/do_not_have_account_tv"
@@ -87,7 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_giant"
         android:text="@string/notRegistered"
-        android:textSize="18sp"
+        android:textSize="@dimen/text_large"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
