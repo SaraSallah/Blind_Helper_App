@@ -5,6 +5,7 @@ import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentRegisterBinding
+import com.example.smartstick.utils.replaceFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -12,6 +13,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     private val firebaseDatabase: FirebaseDatabase by lazy {
         FirebaseDatabase.getInstance()
     }
+    private var fragmentLogin = LoginFragment()
 
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
@@ -30,9 +32,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     }
 
     private fun addCallBacks() {
-        binding.btnLogin.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
             getUserInputs()
             signUp(userName, password)
+        }
+        binding.textViewSignIn.setOnClickListener{
+            replaceFragment(fragmentLogin)
         }
     }
 
