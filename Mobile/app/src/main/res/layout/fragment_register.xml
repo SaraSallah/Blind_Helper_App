@@ -94,7 +94,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/sign_in"
-            android:textColor="@color/primary_800"
+            android:textColor="@color/primary_400"
             android:textSize="@dimen/text_large"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"

@@ -7,6 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/logo"
         android:layout_width="match_parent"
@@ -14,7 +15,6 @@
         android:layout_marginTop="@dimen/spacing_large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@color/black_87"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -126,7 +126,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/sign_up"
-            android:textColor="@color/primary_800"
+            android:textColor="@color/primary_400"
             android:textSize="@dimen/text_large"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"
