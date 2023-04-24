@@ -118,22 +118,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
-    <TextView
-        android:id="@+id/textView_signUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/sign_up"
-        android:textColor="@color/primary_800"
-        android:textSize="@dimen/text_large"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/do_not_have_account_tv"
-        app:layout_constraintTop_toTopOf="@+id/do_not_have_account_tv" />
+        <TextView
+            android:id="@+id/textView_signUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/sign_up"
+            android:textColor="@color/primary_800"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/do_not_have_account_tv"
+            app:layout_constraintTop_toTopOf="@+id/do_not_have_account_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
-
