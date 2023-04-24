@@ -21,6 +21,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     }
     private var userName = ""
     private var password = ""
+    val defaultImageUri = "android.resource://com.example.smartstick.ui.auth/drawable/defualt"
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -56,7 +57,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = User(email, password)
+                    val user = User(
+                        email, password, null, null,
+                        defaultImageUri
+                    )
                     addUser(user)
                     replaceFragment(homeHolderFragment)
                     Log.i("TAG", "Registration successful")
