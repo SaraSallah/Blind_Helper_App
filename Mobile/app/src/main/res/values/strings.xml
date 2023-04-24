@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Smart Stick</string>
+    <string name="sign_in">Sign in </string>
+    <string name="sign_up">Sign up </string>
+    <string name="google">Google </string>
+    <string name="rememberMe">Remember Me </string>
+    <string name="forgotPassword">Forget Password? </string>
+    <string name="resetPassword">Reset Password </string>
+    <string name="welcome">Welcome</string>
+    <string name="back">GoBack</string>
+    <string name="phoneNumber">Phone  </string>
+    <string name="notRegistered">Don\'t have an Account?</string>
+    <string name="havingAccount">Already have An Account?</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+    <!--- hints. -->
+    <string name="username">User Name </string>
+    <string name="email">Email </string>
+    <string name="password"> Password </string>
+    <string name="confirmPassword">Confirm Password </string>
+    <string name="phone">Phone Number </string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

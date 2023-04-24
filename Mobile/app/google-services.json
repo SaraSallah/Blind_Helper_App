@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "688654179181",
+    "firebase_url": "https://smartstickforblindpeople-default-rtdb.firebaseio.com",
+    "project_id": "smartstickforblindpeople",
+    "storage_bucket": "smartstickforblindpeople.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688654179181:android:0db374c6fc1c07fb1e9864",
+        "android_client_info": {
+          "package_name": "com.example.smartstick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688654179181-97uhl5t53l3d7ncc9pg10p5e2ln5b732.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartstick",
+            "certificate_hash": "064c2cbafd773ef00e7c89c442b5b6ba4024ad0d"
+          }
+        },
+        {
+          "client_id": "688654179181-b3pigr1je0j6ubu994ovs46rut70n05f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyygiNmOtA13j_tEI_15N6_EpJ8BhRHqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688654179181-b3pigr1je0j6ubu994ovs46rut70n05f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
