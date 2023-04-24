@@ -56,4 +56,8 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
+    <style name="bottomNavigation" parent="">
+        <item name="backgroundTint">@color/white_100</item>
+    </style>
+
 </resources>
