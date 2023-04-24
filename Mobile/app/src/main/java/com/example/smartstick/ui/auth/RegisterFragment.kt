@@ -5,7 +5,7 @@ import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentRegisterBinding
-import com.example.smartstick.ui.home.HomeHolderFragment
+import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.utils.replaceFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -15,7 +15,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
         FirebaseDatabase.getInstance()
     }
     private var fragmentLogin = LoginFragment()
-    private val homeHolderFragment by lazy { HomeHolderFragment() }
+    private val homeFragment by lazy { HomeFragment() }
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
@@ -62,7 +62,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                         defaultImageUri
                     )
                     addUser(user)
-                    replaceFragment(homeHolderFragment)
+                    replaceFragment(fragmentLogin)
                     Log.i("TAG", "Registration successful")
                 } else {
                     // Handle registration errors

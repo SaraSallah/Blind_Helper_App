@@ -7,8 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
 import com.example.smartstick.ui.auth.LoginFragment
 import com.example.smartstick.ui.auth.RegisterFragment
-import com.example.smartstick.ui.home.HomeHolderFragment
-import com.example.smartstick.ui.home.HomeRelativeFragment
+import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.ui.profile.ProfileFragment
 import com.example.smartstick.ui.search.SearchFragment
 
@@ -18,8 +17,7 @@ class MainActivity : AppCompatActivity() {
     private val fragmentSearch = SearchFragment()
     private val  fragmentRegister = RegisterFragment()
     private val loginFragment =LoginFragment ()
-    private val fragmentHomeRelative = HomeRelativeFragment()
-    private val fragmentHomeHolder = HomeHolderFragment()
+    private val fragmentHome = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setOnItemSelectedListener {item ->
             when(item.itemId){
                 R.id.homeFragment ->{
-                    replaceFragment(fragmentHomeHolder)
+                    replaceFragment(fragmentHome)
                     true
                 }
                 R.id.profileFragment ->{

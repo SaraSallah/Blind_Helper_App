@@ -2,13 +2,13 @@ package com.example.smartstick.ui.home
 
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
-import com.example.smartstick.databinding.FragmentHomeHolderBinding
+import com.example.smartstick.databinding.FragmentHomeBinding
 
-class HomeHolderFragment : BaseFragment<FragmentHomeHolderBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override val TAG: String =this::class.simpleName.toString()
 
-    override fun getViewBinding(): FragmentHomeHolderBinding =
-        FragmentHomeHolderBinding.inflate(layoutInflater)
+    override fun getViewBinding(): FragmentHomeBinding =
+        FragmentHomeBinding.inflate(layoutInflater)
 
 
     override fun setUp() {

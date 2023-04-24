@@ -3,17 +3,16 @@ package com.example.smartstick.ui.auth
 import android.widget.Toast
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentLoginBinding
-import com.example.smartstick.ui.home.HomeHolderFragment
+import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.utils.replaceFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String =this::class.simpleName.toString()
 
     private val fragmentRegister by lazy { RegisterFragment() }
-    private val homeHolderFragment by lazy { HomeHolderFragment() }
+    private val homeHolderFragment by lazy { HomeFragment() }
 
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
