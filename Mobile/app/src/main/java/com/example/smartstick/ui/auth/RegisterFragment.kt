@@ -6,7 +6,6 @@ import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentRegisterBinding
 import com.example.smartstick.ui.home.HomeHolderFragment
-import com.example.smartstick.ui.home.HomeRelativeFragment
 import com.example.smartstick.utils.replaceFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
