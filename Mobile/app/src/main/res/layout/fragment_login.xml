@@ -114,7 +114,7 @@
         android:layout_marginTop="@dimen/spacing_giant"
         android:text="@string/notRegistered"
         android:textSize="@dimen/text_large"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintEnd_toStartOf="@+id/textView_signUp"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
