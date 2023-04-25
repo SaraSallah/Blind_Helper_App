@@ -42,16 +42,16 @@ class SearchAdapter (private val options: FirebaseRecyclerOptions<User>, private
 
         if (mUser.uid != getRef(position).key) {
             holder.bind(model)
-            holder.itemView.setOnClickListener {
-//                val intent = Intent(context, SearchFragment::class.java)
-//                intent.putExtra("userKey", getRef(position).key.toString())
-//                context.startActivity(intent)
-            }
+
         }
     }
 
 }
 
-
+//holder.itemView.setOnClickListener {
+//                val intent = Intent(context, SearchFragment::class.java)
+//                intent.putExtra("userKey", getRef(position).key.toString())
+//                context.startActivity(intent)
+//}
 
 

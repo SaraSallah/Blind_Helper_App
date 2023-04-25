@@ -22,12 +22,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
+        mUserRef =FirebaseDatabase.getInstance().getReference("users")
         options = FirebaseRecyclerOptions.Builder<User>()
             .setQuery(mUserRef , User::class.java).build()
         adapter = SearchAdapter(options,requireContext())
         binding.recyclerViewSearch.adapter = adapter
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
-        mUserRef =FirebaseDatabase.getInstance().getReference("users")
+
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
