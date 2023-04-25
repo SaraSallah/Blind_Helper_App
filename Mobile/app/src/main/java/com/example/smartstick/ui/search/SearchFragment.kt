@@ -28,40 +28,44 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
 
     override fun onStart() {
         super.onStart()
-        adapter.startListening()
+        if (::adapter.isInitialized)
+            adapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        adapter.stopListening()
+        if (::adapter.isInitialized)
+            adapter.stopListening()
     }
 
-    private fun getDataFromFirebaseToRecyclerView(){
+    private fun getDataFromFirebaseToRecyclerView(query: String? = ""){
         mUserRef =FirebaseDatabase.getInstance().getReference("users")
+        val queryRef = if (query?.isEmpty()!!) {
+            mUserRef
+        } else {
+            mUserRef.orderByChild("email").startAt(query).endAt("$query\uf8ff")
+        }
         options = FirebaseRecyclerOptions.Builder<User>()
-            .setQuery(mUserRef , User::class.java).build()
+            .setQuery(queryRef , User::class.java).build()
         adapter = SearchAdapter(options)
         binding.recyclerViewSearch.adapter = adapter
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun addCallBacks(){
-        getDataFromFirebaseToRecyclerView()
+//        getDataFromFirebaseToRecyclerView()
         addSearchListener()
+    }
+
+    private fun searchByQueryAndSetDataInAdapter(query: String?) {
+//        binding.apply {
+        getDataFromFirebaseToRecyclerView(query)
+        adapter.startListening()
+
     }
 
     private fun addSearchListener(){
         binding.searchBar.setOnQueryTextListener(this)
-    }
-
-    private fun searchByQueryAndSetDataInAdapter(query: String?) {
-        query?.let {
-            binding.apply {
-                if (it.isNotEmpty()) {
-                    getDataFromFirebaseToRecyclerView()
-                }
-            }
-        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

@@ -27,7 +27,7 @@ class SearchAdapter (private val options: FirebaseRecyclerOptions<User>) :
             holder.bind(model)
     }
 
-    open class ViewHolder (private val binding: SingleViewFindFriendBinding) :
+    class ViewHolder (private val binding: SingleViewFindFriendBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: User) {
