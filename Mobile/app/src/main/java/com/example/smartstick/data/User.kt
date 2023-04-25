@@ -5,4 +5,7 @@ data class User(var email:String? = null ,
                 var type:String?=null ,
                 var relative_number :String?=null ,
                 val profilePicUrl: String
-)
+){
+    constructor() : this("", "", "", "", "")
+}
+
