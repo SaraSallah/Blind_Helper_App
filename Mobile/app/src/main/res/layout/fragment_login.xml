@@ -1,138 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent">
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/spacing_large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_text_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_giant"
-        android:hint="@string/email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo">
-
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            style="@style/editTextStyle"
-            android:paddingVertical="@dimen/spacing_medium" />
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edit_text_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/password"
-        app:endIconCheckable="true"
-        android:layout_marginTop="@dimen/spacing_small"
-        app:endIconMode="password_toggle"
-        app:hintAnimationEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_email">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_giant"
+                android:hint="@string/email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logo">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            style="@style/editTextStyle"
-            android:paddingVertical="@dimen/spacing_medium" />
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/editTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:paddingVertical="@dimen/spacing_medium" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioGroup
-            android:id="@+id/type_group"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/spacing_medium"
-            app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_password"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_password">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_text_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:hint="@string/password"
+                app:endIconCheckable="true"
+                app:endIconMode="password_toggle"
+                app:hintAnimationEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_email">
 
-            <RadioButton
-                android:id="@+id/relative_button"
-                android:layout_width="88dp"
-                android:layout_height="32dp"
-                android:layout_alignStart="@+id/type_group"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="72dp"
-                android:layout_marginBottom="8dp"
-                android:text="Relative" />
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/editTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:paddingVertical="@dimen/spacing_medium" />
 
-            <RadioButton
-                android:id="@+id/holder_button"
-                android:layout_width="88dp"
-                android:layout_height="32dp"
-                android:layout_alignEnd="@+id/type_group"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="Holder" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        </RadioGroup>
+            <RadioGroup
+                android:id="@+id/type_group"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/edit_text_password"
+                app:layout_constraintStart_toStartOf="@+id/edit_text_password"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_password">
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_medium"
-        android:background="@drawable/btn_shape"
-        android:text="@string/sign_in"
-        android:textAllCaps="false"
-        android:textSize="@dimen/text_large"
-        android:textColor="@color/white_100"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type_group" />
+                <RadioButton
+                    android:id="@+id/relative_button"
+                    android:layout_width="88dp"
+                    android:layout_height="32dp"
+                    android:layout_alignStart="@+id/type_group"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="72dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Relative" />
 
-    <TextView
-        android:id="@+id/do_not_have_account_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_large"
-        android:text="@string/notRegistered"
-        android:textSize="@dimen/text_large"
-        app:layout_constraintEnd_toStartOf="@+id/textView_signUp"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+                <RadioButton
+                    android:id="@+id/holder_button"
+                    android:layout_width="88dp"
+                    android:layout_height="32dp"
+                    android:layout_alignEnd="@+id/type_group"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Holder" />
 
-        <TextView
-            android:id="@+id/textView_signUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/sign_up"
-            android:textColor="@color/primary_400"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/do_not_have_account_tv"
-            app:layout_constraintTop_toTopOf="@+id/do_not_have_account_tv" />
+            </RadioGroup>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:background="@drawable/btn_shape"
+                android:text="@string/sign_in"
+                android:textAllCaps="false"
+                android:textColor="@color/white_100"
+                android:textSize="@dimen/text_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/type_group" />
+
+            <TextView
+                android:id="@+id/do_not_have_account_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:text="@string/notRegistered"
+                android:textSize="@dimen/text_large"
+                app:layout_constraintEnd_toStartOf="@+id/textView_signUp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+            <TextView
+                android:id="@+id/textView_signUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/sign_up"
+                android:textColor="@color/primary_400"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/do_not_have_account_tv"
+                app:layout_constraintTop_toTopOf="@+id/do_not_have_account_tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
 </RelativeLayout>
