@@ -1,5 +1,6 @@
 package com.example.smartstick.ui.search
 
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartstick.MainActivity
@@ -22,13 +23,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
+        Log.i("TAG", "Error here")
         mUserRef =FirebaseDatabase.getInstance().getReference("users")
         options = FirebaseRecyclerOptions.Builder<User>()
             .setQuery(mUserRef , User::class.java).build()
-        adapter = SearchAdapter(options,requireContext())
+        adapter = SearchAdapter(options)
         binding.recyclerViewSearch.adapter = adapter
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
