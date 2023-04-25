@@ -1,5 +1,6 @@
 package com.example.smartstick.ui.search
 
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartstick.MainActivity
@@ -16,8 +17,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
 
     private lateinit var adapter: FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>
     private lateinit var mUserRef: DatabaseReference
-    private lateinit var options : FirebaseRecyclerOptions<User>
-    override val TAG: String =this ::class.simpleName.toString()
+    private lateinit var options: FirebaseRecyclerOptions<User>
+    override val TAG: String = this::class.simpleName.toString()
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)
 
@@ -26,20 +27,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
         addCallBacks()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (::adapter.isInitialized)
-            adapter.startListening()
+    private fun addCallBacks() {
+        addSearchListener()
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (::adapter.isInitialized)
-            adapter.stopListening()
+    private fun addSearchListener() {
+        binding.searchBar.setOnQueryTextListener(this)
     }
 
-    private fun getDataFromFirebaseToRecyclerView(query: String? = ""){
-        mUserRef =FirebaseDatabase.getInstance().getReference("users")
+
+    private fun getDataFromFirebaseToRecyclerView(query: String? = "") {
+        mUserRef = FirebaseDatabase.getInstance().getReference("users")
         val queryRef = if (query?.isEmpty()!!) {
             mUserRef
         } else {
@@ -52,22 +50,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun addCallBacks(){
-//        getDataFromFirebaseToRecyclerView()
-        addSearchListener()
-    }
+
 
     private fun searchByQueryAndSetDataInAdapter(query: String?) {
-//        binding.apply {
+        binding.recyclerViewSearch.visibility =
+            if (query!!.isNotEmpty()) View.VISIBLE else View.GONE
         getDataFromFirebaseToRecyclerView(query)
         adapter.startListening()
 
     }
-
-    private fun addSearchListener(){
-        binding.searchBar.setOnQueryTextListener(this)
-    }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         query?.let { searchByQueryAndSetDataInAdapter(it) }
         return true
@@ -76,5 +67,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
     override fun onQueryTextChange(newText: String?): Boolean {
         newText?.let { searchByQueryAndSetDataInAdapter(it) }
         return true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (::adapter.isInitialized)
+            adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (::adapter.isInitialized)
+            adapter.stopListening()
     }
 }
