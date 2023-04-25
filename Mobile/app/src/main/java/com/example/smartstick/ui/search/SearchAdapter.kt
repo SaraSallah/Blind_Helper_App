@@ -1,47 +1,48 @@
 package com.example.smartstick.ui.search
 
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartstick.R
 import com.example.smartstick.data.User
 import com.example.smartstick.databinding.SingleViewFindFriendBinding
+import com.example.smartstick.ui.profile.ProfileFragment
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
-class SearchAdapter (private val options: FirebaseRecyclerOptions<User>) :
+class SearchAdapter (
+    private val listener: UserInteractionListener,
+    private val options: FirebaseRecyclerOptions<User>) :
     FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>(options) {
-
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mUser: FirebaseUser
+    private val fragmentProfile = ProfileFragment()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = SingleViewFindFriendBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
-        }
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.single_view_find_friend, parent, false)
+        return ViewHolder(view)
+
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: User) {
-            holder.bind(model)
+        holder.binding.userEmail.text = model.email
+        holder.binding.root.setOnClickListener { listener.onClickUser(getRef(position).key.toString()) }
     }
 
-    class ViewHolder (private val binding: SingleViewFindFriendBinding) :
-        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: User) {
-            binding.userEmail.text = model.email
-//            binding.userType.text = model.type
-            binding.imageProfile.setImageResource(R.drawable.defualt)
-        }
+
+    class ViewHolder(viewItem: View) :
+        RecyclerView.ViewHolder(viewItem) {
+        val binding = SingleViewFindFriendBinding.bind(itemView)
     }
+    interface UserInteractionListener {
+        fun onClickUser(userID: String)
+    }
+
 }
-
-//holder.itemView.setOnClickListener {
-//                val intent = Intent(context, SearchFragment::class.java)
-//                intent.putExtra("userKey", getRef(position).key.toString())
-//                context.startActivity(intent)
-//}
-
 

@@ -7,17 +7,20 @@ import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentSearchBinding
+import com.example.smartstick.ui.profile.ProfileFragment
+import com.example.smartstick.utils.replaceFragment
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryTextListener,
-    android.widget.SearchView.OnQueryTextListener {
+    android.widget.SearchView.OnQueryTextListener,SearchAdapter.UserInteractionListener {
 
     private lateinit var adapter: FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>
     private lateinit var mUserRef: DatabaseReference
     private lateinit var options: FirebaseRecyclerOptions<User>
+    private val fragmentProfile = ProfileFragment()
     override val TAG: String = this::class.simpleName.toString()
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)
@@ -45,7 +48,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
         }
         options = FirebaseRecyclerOptions.Builder<User>()
             .setQuery(queryRef , User::class.java).build()
-        adapter = SearchAdapter(options)
+        adapter = SearchAdapter(this,options)
         binding.recyclerViewSearch.adapter = adapter
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -80,4 +83,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
         if (::adapter.isInitialized)
             adapter.stopListening()
     }
+
+    override fun onClickUser(userID: String) {
+        val profileFragment = ProfileFragment.newInstance(userID)
+        replaceFragment(profileFragment)
+
+    }
+
+
 }
