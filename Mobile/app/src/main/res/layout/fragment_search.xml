@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:visibility="visible"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/spacing_medium"
         android:layout_marginTop="@dimen/spacing_medium"
         tools:listitem="@layout/single_view_find_friend"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
