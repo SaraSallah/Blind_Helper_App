@@ -2,7 +2,6 @@ package com.example.smartstick.ui.addrequest
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
@@ -18,7 +17,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     private lateinit var requestRef :DatabaseReference
     private lateinit var mAuth : FirebaseAuth
     private lateinit var mUser: FirebaseUser
-    var currentStage ="nothing_happen"
+    var currentState ="nothing_happen"
     override fun getViewBinding(): FragmentAddRequestBinding =
         FragmentAddRequestBinding.inflate(layoutInflater)
 
@@ -41,8 +40,8 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         friendRef.child(mUser.uid).child(userID!!).addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-                    currentStage ="friend"
-                    binding.btnAddRequest.text ="Send Message"
+                    currentState ="friend"
+                    binding.btnAddRequest.text ="You are Connected"
 
                 }
             }
@@ -54,8 +53,8 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         friendRef.child(userID).child(mUser.uid).addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
-                    currentStage ="friend"
-                    binding.btnAddRequest.text ="Send Message"
+                    currentState ="friend"
+                    binding.btnAddRequest.text ="You are Connected"
                 }
             }
 
@@ -69,14 +68,14 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     if(snapshot.child("status").value.toString()=="pending"){
-                        currentStage ="I_sent_pending"
-                        binding.btnAddRequest.text  ="Cancel Friend Request"
+                        currentState ="I_sent_pending"
+                        binding.btnAddRequest.text  ="Cancel Request"
 //                        btn_decline.visibility =View.GONE
                     }
 
                     if(snapshot.child("status").value.toString()=="decline"){
-                        currentStage ="I_sent_decline"
-                        binding.btnAddRequest.text  ="Cancel Relative Request"
+                        currentState ="I_sent_decline"
+                        binding.btnAddRequest.text  ="Cancel  Request"
 //                        btn_decline.visibility =View.GONE
                     }
                 }
@@ -91,8 +90,8 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     if(snapshot.child("status").value.toString()=="pending"){
-                        currentStage  ="he_sent_pending"
-                        binding.btnAddRequest.text  ="Accept Relative Request"
+                        currentState  ="he_sent_pending"
+                        binding.btnAddRequest.text  ="Accept Request"
 
                     }
                 }
@@ -103,17 +102,17 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             }
 
         })
-        if(currentStage =="nothing_happen")
+        if(currentState =="nothing_happen")
         {
-            currentStage ="nothing_happen"
-            binding.btnAddRequest.text  ="Send Relative Request"
+            currentState ="nothing_happen"
+            binding.btnAddRequest.text  ="Send Request"
 
         }
         friendRef.child(mUser.uid).addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     if(snapshot.child("status").value.toString()=="friend"){
-                        currentStage ="Friend"
+                        currentState ="Friend"
                         binding.btnAddRequest.text  ="Your are Connected"
 
                     }
@@ -129,7 +128,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     if(snapshot.child("status").value.toString()=="friend"){
-                        currentStage ="Friend"
+                        currentState ="Friend"
                         binding.btnAddRequest.text  ="Your are Connected"
 //                        btn_decline.visibility =View.GONE
                     }
@@ -147,7 +146,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     private fun performAction(userID: String?) {
         //val userID: String? =intent.getStringExtra("userKey")
 
-        if(currentStage == "nothing_happen"){
+        if(currentState == "nothing_happen"){
             val hashMap = hashMapOf<String, Any>("status" to "pending")
             requestRef.child(mUser.uid).child(userID!!).updateChildren(hashMap)
                 .addOnCompleteListener { task ->
@@ -155,8 +154,8 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                         Toast.makeText(requireContext(),"You Have Sent Relative Request"
                             ,Toast.LENGTH_LONG).show()
 //                        btn_decline.setVisibility(View.GONE)
-                        currentStage ="I_sent_pending"
-                        binding.btnAddRequest.text  = "Cancel Relative Request"
+                        currentState ="I_sent_pending"
+                        binding.btnAddRequest.text  = "Cancel  Request"
                         // update successful
                     }
                     else {
@@ -166,12 +165,12 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                     }
                 }
         }
-        if(currentStage == "I_sent_pending" || currentStage == "I_sent_decline"){
+        if(currentState == "I_sent_pending" || currentState == "I_sent_decline"){
             requestRef.child(mUser.uid).child(userID!!).removeValue().addOnCompleteListener{ task ->
                 if(task.isSuccessful){
                     Toast.makeText(requireContext(),
                         "You have Cancelled Relative Request",Toast.LENGTH_LONG).show()
-                    currentStage= "nothing_happen"
+                    currentState= "nothing_happen"
                     binding.btnAddRequest.text  = "Send Relative Request"
 //                    btn_decline.visibility = View.GONE
                 }
@@ -182,7 +181,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             }
         }
 
-        if (currentStage == "he_sent_pending"){
+        if (currentState == "he_sent_pending"){
             requestRef.child(userID!!).child(mUser.uid).removeValue().addOnCompleteListener{task->
                 if(task.isSuccessful){
                     val hashMap = hashMapOf<String, Any>(
@@ -195,26 +194,13 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                         if(task.isSuccessful){
                             Toast.makeText(requireContext(),
                                 "You added Friend",Toast.LENGTH_LONG).show()
-                            currentStage = "friend"
+                            currentState = "friend"
                             binding.btnAddRequest.text = ("send Message")
                         }
                     }
                 }
             }
         }
-
-//        if(currentStage.equals("friend")){
-//
-//            btn_decline.text ="Get Current Location"
-//            btn_decline.visibility =View.VISIBLE
-//            btn_decline.setOnClickListener {
-//                startActivity(Intent(this, MapsActivity::class.java))
-//            }
-//            binding.btnAddRequest.text.visibility= View.GONE
-//
-//
-//
-//        }
     }
 
     private fun loadUserData(userId: String) {
