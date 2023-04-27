@@ -17,13 +17,14 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     private lateinit var requestRef :DatabaseReference
     private lateinit var mAuth : FirebaseAuth
     private lateinit var mUser: FirebaseUser
+    private lateinit var userID: String
     var currentState ="nothing_happen"
     override fun getViewBinding(): FragmentAddRequestBinding =
         FragmentAddRequestBinding.inflate(layoutInflater)
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
-        val userID = arguments?.getString("userID")
+         userID = arguments?.getString("userID").toString()
         requestRef = FirebaseDatabase.getInstance().getReference().child("Requests")
         friendRef =FirebaseDatabase.getInstance().getReference().child("Friends")
 
@@ -33,112 +34,107 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         binding.btnAddRequest.setOnClickListener {
             performAction(userID)
         }
-        checkUserExisance(userID)
+        checkUserExistance(userID)
     }
 
-    private fun checkUserExisance(userID: String?) {
-        friendRef.child(mUser.uid).child(userID!!).addValueEventListener(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    currentState ="friend"
-                    binding.btnAddRequest.text ="You are Connected"
-
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-        friendRef.child(userID).child(mUser.uid).addValueEventListener(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    currentState ="friend"
-                    binding.btnAddRequest.text ="You are Connected"
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
-        requestRef.child(mUser.uid).child(userID).addValueEventListener(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    if(snapshot.child("status").value.toString()=="pending"){
-                        currentState ="I_sent_pending"
-                        binding.btnAddRequest.text  ="Cancel Request"
-//                        btn_decline.visibility =View.GONE
-                    }
-
-                    if(snapshot.child("status").value.toString()=="decline"){
-                        currentState ="I_sent_decline"
-                        binding.btnAddRequest.text  ="Cancel  Request"
-//                        btn_decline.visibility =View.GONE
+    private fun checkUserExistance(userID: String?) {
+        checkIfUsersAreFriends(userID)
+        checkIfUserSentRequest(userID)
+        checkIfUserReceivedRequest(userID)
+        checkIfNothingHappened()
+    }
+    private fun checkIfUsersAreFriends(userID: String?) {
+        friendRef.child(mUser.uid).child(userID!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        currentState = "friend"
+                        binding.btnAddRequest.text = "You are Connected"
                     }
                 }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
-        requestRef.child(userID).child(mUser.uid).addValueEventListener(object  :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    if(snapshot.child("status").value.toString()=="pending"){
-                        currentState  ="he_sent_pending"
-                        binding.btnAddRequest.text  ="Accept Request"
-
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+        friendRef.child(userID).child(mUser.uid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        currentState = "friend"
+                        binding.btnAddRequest.text = "You are Connected"
                     }
                 }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
-        if(currentState =="nothing_happen")
-        {
-            currentState ="nothing_happen"
-            binding.btnAddRequest.text  ="Send Request"
-
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+    private fun checkIfUserSentRequest(userID: String?) {
+        requestRef.child(mUser.uid).child(userID!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        if (snapshot.child("status").value.toString() == "pending") {
+                            currentState = "I_sent_pending"
+                            binding.btnAddRequest.text = "Cancel Request"
+                        }
+                        if (snapshot.child("status").value.toString() == "decline") {
+                            currentState = "I_sent_decline"
+                            binding.btnAddRequest.text = "Cancel Request"
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+    private fun checkIfUserReceivedRequest(userID: String?) {
+        requestRef.child(userID!!).child(mUser.uid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        if (snapshot.child("status").value.toString() == "pending") {
+                            currentState = "he_sent_pending"
+                            binding.btnAddRequest.text = "Accept Request"
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+    private fun checkIfNothingHappened() {
+        if (currentState == "nothing_happen") {
+            currentState = "nothing_happen"
+            binding.btnAddRequest.text = "Send Request"
         }
-        friendRef.child(mUser.uid).addValueEventListener(object :ValueEventListener{
+        friendRef.child(mUser.uid).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    if(snapshot.child("status").value.toString()=="friend"){
-                        currentState ="Friend"
-                        binding.btnAddRequest.text  ="Your are Connected"
-
+                if (snapshot.exists()) {
+                    if (snapshot.child("status").value.toString() == "friend") {
+                        currentState = "Friend"
+                        binding.btnAddRequest.text = "You are Connected"
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         })
-        friendRef.child(userID).addValueEventListener(object :ValueEventListener{
+        friendRef.child(userID!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.exists()){
-                    if(snapshot.child("status").value.toString()=="friend"){
-                        currentState ="Friend"
-                        binding.btnAddRequest.text  ="Your are Connected"
-//                        btn_decline.visibility =View.GONE
+                if (snapshot.exists()) {
+                    if (snapshot.child("status").value.toString() == "friend") {
+                        currentState = "Friend"
+                        binding.btnAddRequest.text = "You are Connected"
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
-
         })
     }
 
