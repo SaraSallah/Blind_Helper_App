@@ -7,6 +7,7 @@ import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentSearchBinding
+import com.example.smartstick.ui.addrequest.AddRequestFragment
 import com.example.smartstick.ui.profile.ProfileFragment
 import com.example.smartstick.utils.replaceFragment
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -20,7 +21,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
     private lateinit var adapter: FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>
     private lateinit var mUserRef: DatabaseReference
     private lateinit var options: FirebaseRecyclerOptions<User>
-    private val fragmentProfile = ProfileFragment()
+    private val fragmentAddRequest = AddRequestFragment()
     override val TAG: String = this::class.simpleName.toString()
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)
@@ -85,8 +86,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
     }
 
     override fun onClickUser(userID: String) {
-        val profileFragment = ProfileFragment.newInstance(userID)
-        replaceFragment(profileFragment)
+        val addRequestFragment = AddRequestFragment.newInstance(userID)
+        replaceFragment(addRequestFragment)
 
     }
 
