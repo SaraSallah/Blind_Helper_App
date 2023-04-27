@@ -34,10 +34,10 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         binding.btnAddRequest.setOnClickListener {
             performAction(userID)
         }
-        checkUserExistance(userID)
+        checkUserExistence(userID)
     }
 
-    private fun checkUserExistance(userID: String?) {
+    private fun checkUserExistence(userID: String?) {
         checkIfUsersAreFriends(userID)
         checkIfUserSentRequest(userID)
         checkIfUserReceivedRequest(userID)
