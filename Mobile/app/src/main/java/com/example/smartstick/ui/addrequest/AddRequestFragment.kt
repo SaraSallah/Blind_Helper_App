@@ -138,67 +138,61 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         })
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun performAction(userID: String?) {
-        //val userID: String? =intent.getStringExtra("userKey")
-
-        if(currentState == "nothing_happen"){
-            val hashMap = hashMapOf<String, Any>("status" to "pending")
-            requestRef.child(mUser.uid).child(userID!!).updateChildren(hashMap)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(requireContext(),"You Have Sent Relative Request"
-                            ,Toast.LENGTH_LONG).show()
-//                        btn_decline.setVisibility(View.GONE)
-                        currentState ="I_sent_pending"
-                        binding.btnAddRequest.text  = "Cancel  Request"
-                        // update successful
-                    }
-                    else {
-                        // update failed
-                        Toast.makeText(requireContext(),
-                            ""+task.exception.toString(),Toast.LENGTH_LONG).show()
-                    }
-                }
-        }
-        if(currentState == "I_sent_pending" || currentState == "I_sent_decline"){
-            requestRef.child(mUser.uid).child(userID!!).removeValue().addOnCompleteListener{ task ->
-                if(task.isSuccessful){
-                    Toast.makeText(requireContext(),
-                        "You have Cancelled Relative Request",Toast.LENGTH_LONG).show()
-                    currentState= "nothing_happen"
-                    binding.btnAddRequest.text  = "Send Relative Request"
-//                    btn_decline.visibility = View.GONE
-                }
-                else{
+    private fun sendRelativeRequest(userID: String?) {
+        val hashMap = hashMapOf<String, Any>("status" to "pending")
+        requestRef.child(mUser.uid).child(userID!!).updateChildren(hashMap)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(requireContext(),"You Have Sent Relative Request"
+                        ,Toast.LENGTH_LONG).show()
+                    currentState ="I_sent_pending"
+                    binding.btnAddRequest.text  = "Cancel  Request"
+                } else {
                     Toast.makeText(requireContext(),
                         ""+task.exception.toString(),Toast.LENGTH_LONG).show()
                 }
             }
+    }
+    private fun cancelRelativeRequest(userID: String?) {
+        requestRef.child(mUser.uid).child(userID!!).removeValue().addOnCompleteListener{ task ->
+            if(task.isSuccessful){
+                Toast.makeText(requireContext(),
+                    "You have Cancelled Relative Request",Toast.LENGTH_LONG).show()
+                currentState= "nothing_happen"
+                binding.btnAddRequest.text  = "Send Relative Request"
+            } else{
+                Toast.makeText(requireContext(),
+                    ""+task.exception.toString(),Toast.LENGTH_LONG).show()
+            }
         }
-
-        if (currentState == "he_sent_pending"){
-            requestRef.child(userID!!).child(mUser.uid).removeValue().addOnCompleteListener{task->
-                if(task.isSuccessful){
-                    val hashMap = hashMapOf<String, Any>(
-                        "status" to "friend",
-                        "HolderID" to mUser.uid
-                    )
-
-                    friendRef.child(userID).updateChildren(hashMap).addOnCompleteListener{task ->
-
-                        if(task.isSuccessful){
-                            Toast.makeText(requireContext(),
-                                "You added Friend",Toast.LENGTH_LONG).show()
-                            currentState = "friend"
-                            binding.btnAddRequest.text = ("send Message")
-                        }
+    }
+    private fun addFriend(userID: String?) {
+        requestRef.child(userID!!).child(mUser.uid).removeValue().addOnCompleteListener{task->
+            if(task.isSuccessful){
+                val hashMap = hashMapOf<String, Any>(
+                    "status" to "friend",
+                    "HolderID" to mUser.uid
+                )
+                friendRef.child(userID).updateChildren(hashMap).addOnCompleteListener{task ->
+                    if(task.isSuccessful){
+                        Toast.makeText(requireContext(),
+                            "You added Friend",Toast.LENGTH_LONG).show()
+                        currentState = "friend"
+                        binding.btnAddRequest.text = ("send Message")
                     }
                 }
             }
         }
     }
-
+    private fun performAction(userID: String?) {
+        if (currentState == "nothing_happen") {
+            sendRelativeRequest(userID)
+        } else if (currentState == "I_sent_pending" || currentState == "I_sent_decline") {
+            cancelRelativeRequest(userID)
+        } else if (currentState == "he_sent_pending") {
+            addFriend(userID)
+        }
+    }
     private fun loadUserData(userId: String) {
         val userRef = FirebaseDatabase.getInstance().reference.child("users").child(userId)
         val valueEventListener = object : ValueEventListener {
