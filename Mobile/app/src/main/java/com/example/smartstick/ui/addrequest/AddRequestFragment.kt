@@ -12,7 +12,6 @@ import com.google.firebase.database.*
 
 class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     override val TAG: String = this::class.simpleName.toString()
-    private lateinit var mUserRef: DatabaseReference
     private lateinit var friendRef :DatabaseReference
     private lateinit var requestRef :DatabaseReference
     private lateinit var mAuth : FirebaseAuth
@@ -25,12 +24,12 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
          userID = arguments?.getString("userID").toString()
-        requestRef = FirebaseDatabase.getInstance().getReference().child("Requests")
-        friendRef =FirebaseDatabase.getInstance().getReference().child("Friends")
+        requestRef = FirebaseDatabase.getInstance().reference.child("Requests")
+        friendRef =FirebaseDatabase.getInstance().reference.child("Friends")
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
-        loadUserData(userID!!)
+        loadUserData(userID)
         binding.btnAddRequest.setOnClickListener {
             performAction(userID)
         }
@@ -46,6 +45,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     private fun checkIfUsersAreFriends(userID: String?) {
         friendRef.child(mUser.uid).child(userID!!)
             .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         currentState = "friend"
@@ -58,6 +58,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             })
         friendRef.child(userID).child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         currentState = "friend"
@@ -72,6 +73,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     private fun checkIfUserSentRequest(userID: String?) {
         requestRef.child(mUser.uid).child(userID!!)
             .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         if (snapshot.child("status").value.toString() == "pending") {
@@ -92,6 +94,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     private fun checkIfUserReceivedRequest(userID: String?) {
         requestRef.child(userID!!).child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         if (snapshot.child("status").value.toString() == "pending") {
@@ -105,6 +108,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 }
             })
     }
+    @SuppressLint("SetTextI18n")
     private fun checkIfNothingHappened() {
         if (currentState == "nothing_happen") {
             currentState = "nothing_happen"
@@ -123,7 +127,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 TODO("Not yet implemented")
             }
         })
-        friendRef.child(userID!!).addValueEventListener(object : ValueEventListener {
+        friendRef.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     if (snapshot.child("status").value.toString() == "friend") {
@@ -138,6 +142,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun sendRelativeRequest(userID: String?) {
         val hashMap = hashMapOf<String, Any>("status" to "pending")
         requestRef.child(mUser.uid).child(userID!!).updateChildren(hashMap)
@@ -153,6 +158,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 }
             }
     }
+    @SuppressLint("SetTextI18n")
     private fun cancelRelativeRequest(userID: String?) {
         requestRef.child(mUser.uid).child(userID!!).removeValue().addOnCompleteListener{ task ->
             if(task.isSuccessful){
@@ -166,6 +172,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             }
         }
     }
+    @SuppressLint("SetTextI18n")
     private fun addFriend(userID: String?) {
         requestRef.child(userID!!).child(mUser.uid).removeValue().addOnCompleteListener{task->
             if(task.isSuccessful){
@@ -173,7 +180,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                     "status" to "friend",
                     "HolderID" to mUser.uid
                 )
-                friendRef.child(userID).updateChildren(hashMap).addOnCompleteListener{task ->
+                friendRef.child(userID).updateChildren(hashMap).addOnCompleteListener{ task->
                     if(task.isSuccessful){
                         Toast.makeText(requireContext(),
                             "You added Friend",Toast.LENGTH_LONG).show()
@@ -185,12 +192,16 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         }
     }
     private fun performAction(userID: String?) {
-        if (currentState == "nothing_happen") {
-            sendRelativeRequest(userID)
-        } else if (currentState == "I_sent_pending" || currentState == "I_sent_decline") {
-            cancelRelativeRequest(userID)
-        } else if (currentState == "he_sent_pending") {
-            addFriend(userID)
+        when (currentState) {
+            "nothing_happen" -> {
+                sendRelativeRequest(userID)
+            }
+            "I_sent_pending", "I_sent_decline" -> {
+                cancelRelativeRequest(userID)
+            }
+            "he_sent_pending" -> {
+                addFriend(userID)
+            }
         }
     }
     private fun loadUserData(userId: String) {
