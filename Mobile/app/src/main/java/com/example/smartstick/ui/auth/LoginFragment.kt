@@ -32,7 +32,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    it.isComplete
+                    Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
+                    replaceFragment(homeHolderFragment)
                 }
             }}
 
@@ -40,8 +41,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         binding.btnLogin.setOnClickListener {
             getUserInputs()
             loginUser(email, password)
-            Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
-            replaceFragment(homeHolderFragment)
         }
         binding.textViewSignUp.setOnClickListener{
             replaceFragment(fragmentRegister)

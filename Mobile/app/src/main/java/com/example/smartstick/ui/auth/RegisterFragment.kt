@@ -50,7 +50,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     private fun signUp(email: String?, password: String?) {
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            // Check if email and password are not empty or null
             Log.i("TAG", "Please enter email and password")
             return
         }
@@ -65,7 +64,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                     replaceFragment(fragmentLogin)
                     Log.i("TAG", "Registration successful")
                 } else {
-                    // Handle registration errors
                     Log.e("TAG", "Registration failed", task.exception)
                 }
             }
