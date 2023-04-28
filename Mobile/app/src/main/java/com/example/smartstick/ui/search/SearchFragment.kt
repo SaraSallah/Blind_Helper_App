@@ -4,6 +4,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartstick.MainActivity
+import com.example.smartstick.R
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentSearchBinding
@@ -39,7 +40,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
         binding.searchBar.setOnQueryTextListener(this)
     }
 
-
     private fun getDataFromFirebaseToRecyclerView(query: String? = "") {
         mUserRef = FirebaseDatabase.getInstance().getReference("users")
         val queryRef = if (query?.isEmpty()!!) {
@@ -54,11 +54,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
         binding.recyclerViewSearch.layoutManager = LinearLayoutManager(requireContext())
     }
 
-
-
     private fun searchByQueryAndSetDataInAdapter(query: String?) {
         binding.recyclerViewSearch.visibility =
             if (query!!.isNotEmpty()) View.VISIBLE else View.GONE
+        binding.lottiePlaceholder.visibility =
+            if(query.isEmpty()) View.VISIBLE else View.GONE
         getDataFromFirebaseToRecyclerView(query)
         adapter.startListening()
 
@@ -88,8 +88,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
     override fun onClickUser(userID: String) {
         val addRequestFragment = AddRequestFragment.newInstance(userID)
         replaceFragment(addRequestFragment)
-
     }
-
-
 }
