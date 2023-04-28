@@ -11,6 +11,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         FragmentHomeBinding.inflate(layoutInflater)
 
 
+
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
 
