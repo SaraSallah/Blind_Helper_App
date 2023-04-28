@@ -1,6 +1,7 @@
 package com.example.smartstick.ui.auth
 
 import android.util.Log
+import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
@@ -50,7 +51,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
 
     private fun signUp(email: String?, password: String?) {
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            Log.i("TAG", "Please enter email and password")
+            Toast.makeText(requireContext(), "Please,Enter e-mail & password"
+                , Toast.LENGTH_LONG).show()
             return
         }
         firebaseAuth.createUserWithEmailAndPassword(email, password)
