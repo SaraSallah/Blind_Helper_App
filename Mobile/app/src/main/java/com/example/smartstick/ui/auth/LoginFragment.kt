@@ -1,5 +1,6 @@
 package com.example.smartstick.ui.auth
 
+import android.util.Log
 import android.widget.Toast
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentLoginBinding
@@ -38,11 +39,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun loginUser(email: String, password: String){
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Please,Enter e-mail & password" ,
+                Toast.LENGTH_LONG).show()
+            return
+        }
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
                     replaceFragment(homeHolderFragment)
+                }
+                else
+                {
+                    Toast.makeText(requireContext(), "Please,Enter correct e-mail or password"
+                        , Toast.LENGTH_LONG).show()
+
                 }
             }}
 
