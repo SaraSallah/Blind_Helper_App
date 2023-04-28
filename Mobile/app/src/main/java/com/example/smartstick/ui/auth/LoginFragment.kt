@@ -13,7 +13,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private val fragmentRegister by lazy { RegisterFragment() }
     private val homeHolderFragment by lazy { HomeFragment() }
-
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
@@ -28,15 +27,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         addCallBacks()
     }
 
-    private fun loginUser(email: String, password: String){
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
-                    replaceFragment(homeHolderFragment)
-                }
-            }}
-
     private fun addCallBacks() {
         binding.btnLogin.setOnClickListener {
             getUserInputs()
@@ -46,6 +36,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             replaceFragment(fragmentRegister)
         }
     }
+
+    private fun loginUser(email: String, password: String){
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
+                    replaceFragment(homeHolderFragment)
+                }
+            }}
 
     private fun getUserInputs() {
         email = binding.editTextEmail.editText?.text.toString().trim()
