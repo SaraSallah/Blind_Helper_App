@@ -1,11 +1,13 @@
 package com.example.smartstick.ui.addrequest
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentAddRequestBinding
+import com.example.smartstick.ui.tracking.MapsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -34,6 +36,18 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             performAction(userID)
         }
         checkUserExistence(userID)
+        getLocation()
+    }
+
+    fun getLocation(){
+        binding.btnGetLocation.setOnClickListener {
+            val mapsActivity = activity as? MapsActivity
+            mapsActivity?.getUserLocation(userID)
+            val intent = Intent(activity, MapsActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
     private fun checkUserExistence(userID: String?) {

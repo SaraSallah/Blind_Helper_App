@@ -64,7 +64,7 @@ class MapsActivity : AppCompatActivity() {
         })
     }
 
-    private fun getUserLocation(userId: String) {
+     fun getUserLocation(userId: String) {
         database.child("users").child(userId).child("location")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -84,7 +84,7 @@ class MapsActivity : AppCompatActivity() {
             })
     }
 
-    private fun showFriendLocationOnMap(latitude: Double, longitude: Double) {
+     fun showFriendLocationOnMap(latitude: Double, longitude: Double) {
         val latLng = LatLng(latitude, longitude)
         val markerOptions = MarkerOptions().position(latLng)
         BitmapDescriptorFactory.fromResource(R.drawable.person_marker)
