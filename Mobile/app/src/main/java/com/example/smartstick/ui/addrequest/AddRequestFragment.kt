@@ -57,26 +57,36 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         checkIfNothingHappened()
     }
     private fun checkIfUsersAreFriends(userID: String?) {
-        friendRef.child(mUser.uid).child(userID!!)
+        friendRef.child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        currentState = "friend"
-                        binding.btnAddRequest.text = "You are Connected"
+                        val holderID = snapshot.child("HolderID").getValue().toString()
+                        if (holderID == userID) {
+                            currentState = "friend"
+                            binding.btnAddRequest.text = "You are Connected"
+
+                        }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
             })
-        friendRef.child(userID).child(mUser.uid)
+        friendRef.child(userID!!)
+//            .child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        currentState = "friend"
-                        binding.btnAddRequest.text = "You are Connected"
+                        val holderID = snapshot.child("HolderID").getValue().toString()
+                        if (holderID == mUser.uid) {
+                            currentState = "friend"
+                            binding.btnAddRequest.text = "You are Connected"
+
+                        }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
@@ -128,32 +138,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             currentState = "nothing_happen"
             binding.btnAddRequest.text = "Send Request"
         }
-        friendRef.child(mUser.uid).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    if (snapshot.child("status").value.toString() == "friend") {
-                        currentState = "Friend"
-                        binding.btnAddRequest.text = "You are Connected"
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-        friendRef.child(userID).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    if (snapshot.child("status").value.toString() == "friend") {
-                        currentState = "Friend"
-                        binding.btnAddRequest.text = "You are Connected"
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
+
     }
 
     @SuppressLint("SetTextI18n")
