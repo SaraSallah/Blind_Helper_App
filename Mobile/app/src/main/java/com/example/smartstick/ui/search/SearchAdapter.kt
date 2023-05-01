@@ -1,13 +1,9 @@
 package com.example.smartstick.ui.search
 
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartstick.R
 import com.example.smartstick.data.User
@@ -40,6 +36,7 @@ class SearchAdapter (
         RecyclerView.ViewHolder(viewItem) {
         val binding = SingleViewFindFriendBinding.bind(itemView)
     }
+
     interface UserInteractionListener {
         fun onClickUser(userID: String)
     }
