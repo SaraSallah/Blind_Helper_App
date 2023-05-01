@@ -10,6 +10,9 @@ import com.example.smartstick.ui.auth.RegisterFragment
 import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.ui.profile.ProfileFragment
 import com.example.smartstick.ui.search.SearchFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,12 +21,13 @@ class MainActivity : AppCompatActivity() {
     private val  fragmentRegister = RegisterFragment()
     private val loginFragment =LoginFragment ()
     private val fragmentHome = HomeFragment()
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        auth = Firebase.auth
         initSubView()
         addNavigationBottomListener()
 
@@ -67,5 +71,12 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, fragment)
         transaction.commit()
+    }
+    override fun onStart() {
+        super.onStart()
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            replaceFragment(fragmentHome)
+        }
     }
 }
