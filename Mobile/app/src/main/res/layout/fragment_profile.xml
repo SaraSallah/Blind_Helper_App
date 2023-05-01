@@ -20,12 +20,12 @@
         app:shapeAppearanceOverlay="@style/roundedImageView" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textView_name"
+        android:id="@+id/View_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_medium"
         android:layout_marginTop="@dimen/spacing_large"
-        android:text="@string/name"
+        android:text="@string/email"
         android:textSize="@dimen/text_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
@@ -33,16 +33,15 @@
         app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/editText_name"
+        android:id="@+id/textView_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_marginHorizontal="@dimen/spacing_large"
-        android:hint="@string/jolly_adam"
         style="@style/editTextStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/View_email"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView_phone"
@@ -55,15 +54,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_name" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_email" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edittext_email"
+        android:id="@+id/edittext_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_marginHorizontal="@dimen/spacing_large"
-        android:hint="@string/phone_number"
+        tools:text="@string/phone_number"
         style="@style/editTextStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,33 +72,38 @@
         android:id="@+id/textView_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_margin="@dimen/spacing_medium"
         android:text="@string/password"
         android:textSize="@dimen/text_medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_email" />
+        app:layout_constraintTop_toBottomOf="@+id/edittext_phone" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editText_password"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_medium"
-        android:layout_marginHorizontal="@dimen/spacing_large"
-        android:hint="@string/edit_password"
-        style="@style/editTextStyle"
-        app:layout_constraintStart_toStartOf="parent"
+        app:endIconCheckable="true"
+        android:layout_margin="@dimen/spacing_medium"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_password"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/editTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textView_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_margin="@dimen/spacing_medium"
         android:text="@string/your_location"
         android:textSize="@dimen/text_medium"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,10 +118,24 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_large"
         android:layout_marginTop="@dimen/spacing_medium"
-        android:hint="@string/location"
+        tools:text="@string/location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_location" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_location"/>
+
+    <Button
+        android:id="@+id/btn_saveData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_medium"
+        android:background="@drawable/btn_shape"
+        android:text="@string/save"
+        android:textAllCaps="false"
+        android:textColor="@color/white_100"
+        android:textSize="@dimen/text_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editText_location"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.example.smartstick.ui.auth
 
-import android.util.Log
 import android.widget.Toast
+import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentLoginBinding
 import com.example.smartstick.ui.home.HomeFragment
@@ -24,6 +24,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         FragmentLoginBinding.inflate(layoutInflater)
 
     override fun setUp() {
+        (activity as MainActivity).hideBottomNavigationView()
         addCallBacks()
     }
 
