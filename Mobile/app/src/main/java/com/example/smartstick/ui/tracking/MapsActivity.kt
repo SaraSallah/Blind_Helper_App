@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 
-class MapsActivity : AppCompatActivity() {
+class MapsActivity() : AppCompatActivity() {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -29,9 +29,11 @@ class MapsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val holderID = intent.getStringExtra("holderID") ?: ""
         initFirebase()
         initMap()
-        initFriendLocationListener()
+//        initFriendLocationListener(holderID)
+        getUserLocation(holderID)
     }
 
     private fun initFirebase() {
@@ -47,13 +49,13 @@ class MapsActivity : AppCompatActivity() {
         }
     }
 
-    private fun initFriendLocationListener() {
+    private fun initFriendLocationListener(holderID:String) {
         val userId = mUser.uid
         database.child("Friends").child(userId).
         addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    val holderID = snapshot.child("HolderID").getValue().toString()
+//                    val holderID = snapshot.child("HolderID").getValue().toString()
                     getUserLocation(holderID)
                 }
             }
