@@ -32,6 +32,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         loadAccountData()
         addCallBacks()
     }
+
     private fun addCallBacks(){
         binding.btnSaveData.setOnClickListener {
             updateRelativeNumber()
@@ -60,6 +61,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             }
         })
     }
+
      private fun updateRelativeNumber(){
          val num  =binding.edittextPhone.text.toString()
          mUserRef!!.child(mUser!!.uid).child("Relative Number")
@@ -69,12 +71,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                      Toast.makeText(requireContext()," You add your relative number  ",Toast.LENGTH_LONG).show()
 
                  } else {
-                     // Error updating data
                      val message = task.exception?.message ?: "Unknown error"
-                     Toast.makeText(requireContext(),"Erroe$message",Toast.LENGTH_LONG).show()
+                     Toast.makeText(requireContext(),"Error$message",Toast.LENGTH_LONG).show()
                  }
              }
-
      }
 
     private fun getMyHomeLocation(){
@@ -91,13 +91,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                         binding.editTextLocation.setText(address)
                     }
                 }
-
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.e(ContentValues.TAG, "Error getting location data", databaseError.toException())
                 }
             })
     }
-    fun getAddressLocation(context: Context, latitude: Double, longitude: Double): String {
+
+    private fun getAddressLocation(context: Context, latitude: Double, longitude: Double): String {
         val geocoder = Geocoder(context)
         try {
             val addressList = geocoder.getFromLocation(latitude, longitude, 1)
@@ -111,6 +111,4 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
         return "City not found"
     }
-
-
 }
