@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.GONE
     }
     private fun initSubView() {
-        addFragment(fragmentRegister)
+        addFragment(fragmentProfile)
     }
     private fun replaceFragment(fragment : Fragment){
         val transaction = supportFragmentManager.beginTransaction()
