@@ -6,12 +6,20 @@ import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.smartstick.MainActivity
+import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHomeBinding
+import com.example.smartstick.ui.search.SearchAdapter
 import com.example.smartstick.ui.tracking.LocationManager
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.DatabaseReference
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override val TAG: String =this::class.simpleName.toString()
+    private lateinit var adapter: FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>
+    private lateinit var mUserRef: DatabaseReference
+    private lateinit var options: FirebaseRecyclerOptions<User>
 
     override fun getViewBinding(): FragmentHomeBinding =
         FragmentHomeBinding.inflate(layoutInflater)
@@ -23,6 +31,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
     }
+
+
+
+
+
 
     private fun startLocationService() {
         if (isLocationPermissionGranted()) {
@@ -67,9 +80,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (::adapter.isInitialized)
+            adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (::adapter.isInitialized)
+            adapter.stopListening()
+    }
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
-
-
 }
