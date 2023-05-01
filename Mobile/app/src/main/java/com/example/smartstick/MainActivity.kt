@@ -1,12 +1,11 @@
 package com.example.smartstick
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
 import com.example.smartstick.ui.auth.LoginFragment
-import com.example.smartstick.ui.auth.RegisterFragment
 import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.ui.profile.ProfileFragment
 import com.example.smartstick.ui.search.SearchFragment
@@ -18,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val fragmentProfile = ProfileFragment()
     private val fragmentSearch = SearchFragment()
-    private val  fragmentRegister = RegisterFragment()
     private val loginFragment =LoginFragment ()
     private val fragmentHome = HomeFragment()
     private lateinit var auth: FirebaseAuth
@@ -27,9 +25,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        auth = Firebase.auth
         initSubView()
         addNavigationBottomListener()
+        auth = Firebase.auth
 
     }
     private fun addNavigationBottomListener(){
@@ -65,18 +63,20 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.visibility = View.GONE
     }
     private fun initSubView() {
-        addFragment(fragmentProfile)
+        addFragment(loginFragment)
     }
     private fun replaceFragment(fragment : Fragment){
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container,fragment)
         transaction.commit()
     }
+
     private fun addFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, fragment)
         transaction.commit()
     }
+
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
@@ -84,4 +84,6 @@ class MainActivity : AppCompatActivity() {
             replaceFragment(fragmentHome)
         }
     }
+
+
 }
