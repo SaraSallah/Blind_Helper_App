@@ -15,10 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 class MapsActivity : AppCompatActivity() {
 
