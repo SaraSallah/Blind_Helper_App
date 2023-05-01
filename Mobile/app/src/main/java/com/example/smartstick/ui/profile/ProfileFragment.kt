@@ -35,9 +35,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     val email= dataSnapshot.child("email").value.toString()
                     val  password= dataSnapshot.child("password").value.toString()
                     binding.textViewEmail.text = email
-                    binding.editTextPassword.setText(password)
+                    binding.editTextPassword.editText?.setText(password)
                 }
-                //password = binding.editTextPassword.editText?.text.toString()
                 else{
                     Toast.makeText(requireContext(),"Data Not Exist" ,Toast.LENGTH_LONG).show()
                 }
