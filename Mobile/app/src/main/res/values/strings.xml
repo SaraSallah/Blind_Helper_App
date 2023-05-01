@@ -29,4 +29,9 @@
     <string name="userEmail">name@gmail.com</string>
     <string name="name">Name</string>
     <string name="jolly_adam">Jolly Adam</string>
+    <string name="phone_number">01236589548</string>
+    <string name="phone_numbertV">Phone Number</string>
+    <string name="edit_password">0*******</string>
+    <string name="your_location">Your Location</string>
+    <string name="location">El-Nozha</string>
 </resources>
