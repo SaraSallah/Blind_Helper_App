@@ -20,14 +20,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
-
+        mAuth = FirebaseAuth.getInstance()
+        mUser = mAuth.currentUser
+        mUserRef = FirebaseDatabase.getInstance().getReference("users")
         loadAccountData()
     }
 
     private fun loadAccountData() {
-        mAuth = FirebaseAuth.getInstance()
-        mUser = mAuth.currentUser
-        mUserRef = FirebaseDatabase.getInstance().getReference("users")
         mUserRef!!.child(mUser?.uid ?: "").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -45,7 +44,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             }
         })
     }
-
 
 
 }
