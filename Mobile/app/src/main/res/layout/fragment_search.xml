@@ -30,7 +30,7 @@
         android:visibility="visible"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/emptysearch"
+        app:lottie_rawRes="@raw/search"
         android:layout_marginHorizontal="@dimen/spacing_medium"
         android:layout_marginTop="@dimen/spacing_medium"
         app:layout_constraintBottom_toBottomOf="parent"

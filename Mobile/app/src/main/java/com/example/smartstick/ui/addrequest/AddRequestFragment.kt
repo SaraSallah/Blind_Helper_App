@@ -1,11 +1,13 @@
 package com.example.smartstick.ui.addrequest
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentAddRequestBinding
+import com.example.smartstick.ui.tracking.MapsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -30,10 +32,23 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
         loadUserData(userID)
+        addCallBacks()
+        checkUserExistence(userID)
+        getLocation(userID)
+    }
+
+    fun addCallBacks(){
         binding.btnAddRequest.setOnClickListener {
             performAction(userID)
         }
-        checkUserExistence(userID)
+    }
+
+    private fun getLocation(userID: String?){
+        binding.btnGetLocation.setOnClickListener {
+            val intent = Intent(requireActivity(), MapsActivity::class.java)
+            intent.putExtra("holderID", userID) // pass the user ID as an extra
+            startActivity(intent)
+        }
     }
 
     private fun checkUserExistence(userID: String?) {
@@ -42,21 +57,25 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         checkIfUserReceivedRequest(userID)
         checkIfNothingHappened()
     }
+
     private fun checkIfUsersAreFriends(userID: String?) {
-        friendRef.child(mUser.uid).child(userID!!)
+        friendRef.child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        currentState = "friend"
-                        binding.btnAddRequest.text = "You are Connected"
+                            currentState = "friend"
+                            binding.btnAddRequest.text = "You are Connected"
+
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
             })
-        friendRef.child(userID).child(mUser.uid)
+        friendRef.child(userID!!)
+            .child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -114,32 +133,6 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             currentState = "nothing_happen"
             binding.btnAddRequest.text = "Send Request"
         }
-        friendRef.child(mUser.uid).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    if (snapshot.child("status").value.toString() == "friend") {
-                        currentState = "Friend"
-                        binding.btnAddRequest.text = "You are Connected"
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-        friendRef.child(userID).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    if (snapshot.child("status").value.toString() == "friend") {
-                        currentState = "Friend"
-                        binding.btnAddRequest.text = "You are Connected"
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
     }
 
     @SuppressLint("SetTextI18n")
@@ -158,6 +151,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 }
             }
     }
+
     @SuppressLint("SetTextI18n")
     private fun cancelRelativeRequest(userID: String?) {
         requestRef.child(mUser.uid).child(userID!!).removeValue().addOnCompleteListener{ task ->
@@ -172,15 +166,15 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             }
         }
     }
+
     @SuppressLint("SetTextI18n")
     private fun addFriend(userID: String?) {
         requestRef.child(userID!!).child(mUser.uid).removeValue().addOnCompleteListener{task->
             if(task.isSuccessful){
                 val hashMap = hashMapOf<String, Any>(
                     "status" to "friend",
-                    "HolderID" to mUser.uid
                 )
-                friendRef.child(userID).updateChildren(hashMap).addOnCompleteListener{ task->
+                friendRef.child(userID).child(mUser.uid).updateChildren(hashMap).addOnCompleteListener{ task ->
                     if(task.isSuccessful){
                         Toast.makeText(requireContext(),
                             "You added Friend",Toast.LENGTH_LONG).show()
@@ -191,6 +185,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             }
         }
     }
+
     private fun performAction(userID: String?) {
         when (currentState) {
             "nothing_happen" -> {
@@ -204,6 +199,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             }
         }
     }
+
     private fun loadUserData(userId: String) {
         val userRef = FirebaseDatabase.getInstance().reference.child("users").child(userId)
         val valueEventListener = object : ValueEventListener {
@@ -216,6 +212,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         }
         userRef.addValueEventListener(valueEventListener)
     }
+
     private fun handleUserSnapshot(snapshot: DataSnapshot) {
         if (snapshot.exists()) {
             val userEmail = snapshot.child("email").value.toString()
@@ -224,9 +221,11 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             showDataNotFoundMessage()
         }
     }
+
     private fun handleError(errorMessage: String) {
         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
     }
+
     private fun showDataNotFoundMessage() {
         Toast.makeText(requireContext(), "Data not found", Toast.LENGTH_LONG).show()
     }

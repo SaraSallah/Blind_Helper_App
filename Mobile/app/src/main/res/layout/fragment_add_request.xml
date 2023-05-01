@@ -9,7 +9,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@drawable/backround_add_request"
+        android:background="@drawable/background_add_request"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="@dimen/text_giant"
         app:layout_constraintTop_toBottomOf="@+id/shapeableImageView"
-        tools:text="Sara@gmail.com" />
+        tools:text="@string/userEmail" />
 
     <Button
         android:id="@+id/btn_add_request"
@@ -48,7 +48,20 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:background="@drawable/background_button"
-        android:text="Add Request"
+        android:text="@string/add_request"
+        android:paddingHorizontal="@dimen/spacing_giant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/btn_get_Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="550dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@drawable/background_button"
+        android:text="Get Location"
         android:paddingHorizontal="@dimen/spacing_giant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
