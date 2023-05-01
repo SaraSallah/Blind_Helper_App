@@ -36,15 +36,24 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             performAction(userID)
         }
         checkUserExistence(userID)
-        getLocation()
+        getLocation(userID)
     }
 
-    fun getLocation(){
+    private fun getLocation(userID: String?){
         binding.btnGetLocation.setOnClickListener {
-            val mapsActivity = activity as? MapsActivity
-            mapsActivity?.getUserLocation(userID)
-            val intent = Intent(activity, MapsActivity::class.java)
+            val intent = Intent(requireActivity(), MapsActivity::class.java)
+            intent.putExtra("holderID", userID) // pass the user ID as an extra
             startActivity(intent)
+
+
+//            val mapsActivity = MapsActivity(userID)
+
+// Call the getUserLocation() method to show the user's location on the map
+//            mapsActivity.getUserLocation(userID)
+//            val mapsActivity = activity as? MapsActivity
+//            mapsActivity?.getUserLocation(userID)
+//            val intent = Intent(activity, MapsActivity::class.java)
+//            startActivity(intent)
         }
 
 
@@ -62,12 +71,9 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        val holderID = snapshot.child("HolderID").getValue().toString()
-                        if (holderID == userID) {
                             currentState = "friend"
                             binding.btnAddRequest.text = "You are Connected"
 
-                        }
                     }
                 }
 
@@ -76,17 +82,16 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 }
             })
         friendRef.child(userID!!)
-//            .child(mUser.uid)
+            .child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        val holderID = snapshot.child("HolderID").getValue().toString()
-                        if (holderID == mUser.uid) {
-                            currentState = "friend"
-                            binding.btnAddRequest.text = "You are Connected"
 
-                        }
+                        currentState = "friend"
+                        binding.btnAddRequest.text = "You are Connected"
+
+
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
@@ -177,9 +182,8 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             if(task.isSuccessful){
                 val hashMap = hashMapOf<String, Any>(
                     "status" to "friend",
-                    "HolderID" to mUser.uid
                 )
-                friendRef.child(userID).updateChildren(hashMap).addOnCompleteListener{ task->
+                friendRef.child(userID).child(mUser.uid).updateChildren(hashMap).addOnCompleteListener{ task->
                     if(task.isSuccessful){
                         Toast.makeText(requireContext(),
                             "You added Friend",Toast.LENGTH_LONG).show()
