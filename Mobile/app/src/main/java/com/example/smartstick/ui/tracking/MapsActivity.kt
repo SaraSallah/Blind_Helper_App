@@ -3,7 +3,6 @@ package com.example.smartstick.ui.tracking
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.smartstick.R
 import com.example.smartstick.databinding.ActivityMapsBinding
@@ -17,13 +16,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 
-class MapsActivity() : AppCompatActivity() {
+class MapsActivity : AppCompatActivity() {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var database: DatabaseReference
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mUser: FirebaseUser
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mUser: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +31,6 @@ class MapsActivity() : AppCompatActivity() {
         val holderID = intent.getStringExtra("holderID") ?: ""
         initFirebase()
         initMap()
-//        initFriendLocationListener(holderID)
         getUserLocation(holderID)
     }
 
@@ -49,24 +47,7 @@ class MapsActivity() : AppCompatActivity() {
         }
     }
 
-    private fun initFriendLocationListener(holderID:String) {
-        val userId = mUser.uid
-        database.child("Friends").child(userId).
-        addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-//                    val holderID = snapshot.child("HolderID").getValue().toString()
-                    getUserLocation(holderID)
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                showToast("You don't have any holder")
-            }
-        })
-    }
-
-     fun getUserLocation(userId: String) {
+    private fun getUserLocation(userId: String) {
         database.child("users").child(userId).child("location")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -95,7 +76,4 @@ class MapsActivity() : AppCompatActivity() {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this@MapsActivity, message, Toast.LENGTH_LONG).show()
-    }
 }

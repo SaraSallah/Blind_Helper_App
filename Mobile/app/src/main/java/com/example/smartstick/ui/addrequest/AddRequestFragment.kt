@@ -44,16 +44,6 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             val intent = Intent(requireActivity(), MapsActivity::class.java)
             intent.putExtra("holderID", userID) // pass the user ID as an extra
             startActivity(intent)
-
-
-//            val mapsActivity = MapsActivity(userID)
-
-// Call the getUserLocation() method to show the user's location on the map
-//            mapsActivity.getUserLocation(userID)
-//            val mapsActivity = activity as? MapsActivity
-//            mapsActivity?.getUserLocation(userID)
-//            val intent = Intent(activity, MapsActivity::class.java)
-//            startActivity(intent)
         }
 
 
@@ -183,7 +173,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
                 val hashMap = hashMapOf<String, Any>(
                     "status" to "friend",
                 )
-                friendRef.child(userID).child(mUser.uid).updateChildren(hashMap).addOnCompleteListener{ task->
+                friendRef.child(userID).child(mUser.uid).updateChildren(hashMap).addOnCompleteListener{ task ->
                     if(task.isSuccessful){
                         Toast.makeText(requireContext(),
                             "You added Friend",Toast.LENGTH_LONG).show()
