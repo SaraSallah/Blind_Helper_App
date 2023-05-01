@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(fragmentSearch)
                     true
                 }
+                R.id.logout ->{
+                    auth.signOut()
+                    replaceFragment(loginFragment)
+                    true
+                }
                 else -> false
 
             }
