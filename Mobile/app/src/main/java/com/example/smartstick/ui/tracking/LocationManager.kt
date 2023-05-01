@@ -52,8 +52,9 @@ class LocationManager : Service(), LocationListener {
         val latitude = location.latitude
         val longitude = location.longitude
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val timeInMillis = System.currentTimeMillis()
 
-        database.child("users").child(userId).child("location").setValue("$latitude, $longitude")
+        database.child("users").child(userId).child("location").setValue("$latitude, $longitude, $timeInMillis")
     }
 
     override fun onProviderDisabled(provider: String) {}
@@ -69,6 +70,6 @@ class LocationManager : Service(), LocationListener {
     companion object {
         private const val TAG = "LocationService"
         private const val MIN_DISTANCE_CHANGE_FOR_UPDATES: Float = 10f
-        private const val MIN_TIME_BW_UPDATES: Long = 1000 * 60 // 1 minute
+        private const val MIN_TIME_BW_UPDATES: Long = 1000  // 1 minute
     }
 }
