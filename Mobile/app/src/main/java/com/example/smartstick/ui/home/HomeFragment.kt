@@ -3,23 +3,29 @@ package com.example.smartstick.ui.home
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.User
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHomeBinding
 import com.example.smartstick.ui.search.SearchAdapter
 import com.example.smartstick.ui.tracking.LocationManager
+import com.example.smartstick.ui.tracking.MapsActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override val TAG: String =this::class.simpleName.toString()
     private lateinit var adapter: FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>
     private lateinit var mUserRef: DatabaseReference
-    private lateinit var options: FirebaseRecyclerOptions<User>
 
     override fun getViewBinding(): FragmentHomeBinding =
         FragmentHomeBinding.inflate(layoutInflater)
@@ -28,13 +34,62 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
         startLocationService()
+        val friendRef = FirebaseDatabase.getInstance().getReference("Friends")
+        val userID = FirebaseAuth.getInstance().currentUser?.uid
+        friendRef.child(userID!!).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val friendIDs = mutableListOf<String>()
+                for (friendSnapshot in snapshot.children) {
+                    friendIDs.add(friendSnapshot.key.toString())
+                }
+                // Pass the list of friend IDs to a function to retrieve their information
+                getFriendsInformation(friendIDs)
+            }
 
-
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to retrieve friends: ${error.message}")
+            }
+        })
     }
 
+    private fun getFriendsInformation(friendIDs: List<String>) {
+        // Get a reference to the "users" node in your Firebase database
+        val userRef = FirebaseDatabase.getInstance().getReference("users")
 
+        // Add a listener to retrieve your friends' information
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener,
+            HolderAdapter.UserInteractionListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val users = mutableListOf<User>()
+                val friends = mutableListOf<String>()
+                for (friendID in friendIDs) {
+                    val friendSnapshot = snapshot.child(friendID)
+                    val userEmail = friendSnapshot.child("email").value.toString()
+                    val userProfileImageUrl =
+                        friendSnapshot.child("profileImageUrl").value.toString()
+                    val user = User(userEmail, "", "", userProfileImageUrl)
+                    users.add(user)
+//                    val friend = Friend(friendID)
+                    friends.add(friendID)
 
+                }
+                // Pass the list of friends to your RecyclerView adapter to display them
+                val adapter = HolderAdapter(this, users, friends)
+                binding.recyclerViewFriends.adapter = adapter
+                binding.recyclerViewFriends.layoutManager = LinearLayoutManager(requireContext())
+            }
 
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to retrieve users: ${error.message}")
+            }
+
+            override fun onClickUser(userID: String) {
+                val intent = Intent(requireActivity(), MapsActivity::class.java)
+                intent.putExtra("holderID", userID) // pass the user ID as an extra
+                startActivity(intent)
+            }
+        })
+    }
 
 
     private fun startLocationService() {
@@ -61,6 +116,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         )
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -95,4 +151,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
+
+
 }
