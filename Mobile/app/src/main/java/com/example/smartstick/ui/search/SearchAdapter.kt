@@ -16,7 +16,6 @@ class SearchAdapter (
     private val listener: UserInteractionListener,
     private val options: FirebaseRecyclerOptions<User>) :
     FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>(options) {
-    private val fragmentProfile = ProfileFragment()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
