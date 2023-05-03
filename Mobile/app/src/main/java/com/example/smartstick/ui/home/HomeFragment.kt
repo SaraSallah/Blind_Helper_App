@@ -16,6 +16,7 @@ import com.example.smartstick.ui.tracking.LocationManager
 import com.example.smartstick.ui.tracking.MapsActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -23,9 +24,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    override val TAG: String =this::class.simpleName.toString()
+    override val TAG: String = this::class.simpleName.toString()
     private lateinit var adapter: FirebaseRecyclerAdapter<User, SearchAdapter.ViewHolder>
-    private lateinit var mUserRef: DatabaseReference
+    private lateinit var friendRef: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mUser: FirebaseUser
 
     override fun getViewBinding(): FragmentHomeBinding =
         FragmentHomeBinding.inflate(layoutInflater)
@@ -34,9 +37,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
         startLocationService()
-        val friendRef = FirebaseDatabase.getInstance().getReference("Friends")
-        val userID = FirebaseAuth.getInstance().currentUser?.uid
-        friendRef.child(userID!!).addListenerForSingleValueEvent(object : ValueEventListener {
+        friendRef = FirebaseDatabase.getInstance().getReference("Friends")
+        mAuth = FirebaseAuth.getInstance()
+        mUser = mAuth.currentUser!!
+        getAllFriendsID()
+    }
+
+    private fun getAllFriendsID() {
+        friendRef.child(mUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val friendIDs = mutableListOf<String>()
                 for (friendSnapshot in snapshot.children) {
@@ -50,13 +58,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 Log.e(TAG, "Failed to retrieve friends: ${error.message}")
             }
         })
+
     }
 
     private fun getFriendsInformation(friendIDs: List<String>) {
-        // Get a reference to the "users" node in your Firebase database
         val userRef = FirebaseDatabase.getInstance().getReference("users")
-
-        // Add a listener to retrieve your friends' information
         userRef.addListenerForSingleValueEvent(object : ValueEventListener,
             HolderAdapter.UserInteractionListener {
             override fun onDataChange(snapshot: DataSnapshot) {
