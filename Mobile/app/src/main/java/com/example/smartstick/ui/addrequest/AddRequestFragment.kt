@@ -37,7 +37,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         getLocation(userID)
     }
 
-    fun addCallBacks(){
+    private fun addCallBacks(){
         binding.btnAddRequest.setOnClickListener {
             performAction(userID)
         }
