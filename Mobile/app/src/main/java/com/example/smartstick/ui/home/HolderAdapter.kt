@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartstick.R
 import com.example.smartstick.data.User
 import com.example.smartstick.databinding.ItemGetAllHolderBinding
-import com.example.smartstick.databinding.SingleViewFindFriendBinding
 
-class HolderAdapter (
-    private val listener: HolderAdapter.UserInteractionListener,
+class HolderAdapter(
+    private val listener: UserInteractionListener,
     private val relativeFriends: List<User>,
     private val keys: List<String>
 ) :
