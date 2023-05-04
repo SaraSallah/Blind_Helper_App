@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartstick.R
 import com.example.smartstick.data.User
+import com.example.smartstick.databinding.ItemGetAllHolderBinding
 import com.example.smartstick.databinding.SingleViewFindFriendBinding
 
 class HolderAdapter (
@@ -17,7 +18,7 @@ class HolderAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.single_view_find_friend, parent, false)
+            .inflate(R.layout.item_get_all_holder, parent, false)
         return ViewHolder(view)
     }
 
@@ -26,6 +27,7 @@ class HolderAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val friend = relativeFriends[position]
         holder.binding.userEmail.text = friend.email
+        holder.binding.lastSeen.text = friend.lastSeenLocation
         holder.binding.root.setOnClickListener { listener.onClickUser(keys[position]) }
     }
 
@@ -34,7 +36,7 @@ class HolderAdapter (
     }
 
     class ViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
-        val binding = SingleViewFindFriendBinding.bind(itemView)
+        val binding = ItemGetAllHolderBinding.bind(itemView)
     }
 
 }

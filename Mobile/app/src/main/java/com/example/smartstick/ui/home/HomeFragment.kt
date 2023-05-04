@@ -60,7 +60,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val userEmail = friendSnapshot.child("email").value.toString()
                     val userProfileImageUrl =
                         friendSnapshot.child("profileImageUrl").value.toString()
-                    val user = User(userEmail, "", "", userProfileImageUrl)
+                    val location = friendSnapshot.child("location").toString()
+                    val locationArray = location.split(",")
+                    val lastSeen = locationArray[2].toLongOrNull().toString()
+                    val user = User(userEmail, "", ""
+                        , userProfileImageUrl,lastSeen)
                     users.add(user)
                     friends.add(friendID)
 

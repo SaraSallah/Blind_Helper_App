@@ -2,10 +2,11 @@ package com.example.smartstick.data
 
 data class User(
     var email:String? = null ,
-                var password:String? = null  ,
-                var relative_number :String?=null ,
-                val profilePicUrl: String
+    var password:String? = null  ,
+    var relative_number :String?=null ,
+    val profilePicUrl: String?,
+    var lastSeenLocation: String? = null
 ){
-    constructor() : this("", "", "", "")
+    constructor() : this("", "", "", "", "")
 }
 

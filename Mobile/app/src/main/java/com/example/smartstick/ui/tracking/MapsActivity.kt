@@ -57,18 +57,17 @@ class MapsActivity : AppCompatActivity() {
                     val locationArray = locationString?.split(", ")
                     val latitude = locationArray?.get(0)?.toDoubleOrNull()
                     val longitude = locationArray?.get(1)?.toDoubleOrNull()
-                    val time = if ((locationArray?.size ?: 0) >= 3) locationArray?.get(2)?.toLongOrNull() else null
-
+                    val time = if ((locationArray?.size ?: 0) >= 3)
+                        locationArray?.get(2)?.toLongOrNull() else null
 
                     if (latitude != null && longitude != null && time != null ) {
                         val currentDate = Date(time)
-                        val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+                        val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss",
+                            Locale.getDefault())
                         val formattedDate = formatter.format(currentDate)
                         Log.e("Map",formattedDate.toString())
                         showFriendLocationOnMap(latitude, longitude)
-
                     }
-
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

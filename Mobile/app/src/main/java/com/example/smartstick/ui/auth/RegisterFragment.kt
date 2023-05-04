@@ -20,7 +20,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     }
     private var userName = ""
     private var password = ""
-    val defaultImageUri = "android.resource://com.example.smartstick.ui.auth/drawable/defualt"
+    private val defaultImageUri = "android.resource://com.example.smartstick.ui.auth/drawable/defualt"
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -58,7 +58,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
                 if (task.isSuccessful) {
                     val user = User(
                         email, password, null,
-                        defaultImageUri
+                        defaultImageUri, null
                     )
                     addUser(user)
                     replaceFragment(fragmentLogin)
