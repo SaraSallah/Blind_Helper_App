@@ -1,6 +1,7 @@
 package com.example.smartstick.ui.home
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override val TAG: String =this::class.simpleName.toString()
@@ -50,7 +54,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 for (friendSnapshot in snapshot.children) {
                     friendIDs.add(friendSnapshot.key.toString())
                 }
-                // Pass the list of friend IDs to a function to retrieve their information
                 getFriendsInformation(friendIDs)
             }
 
@@ -61,10 +64,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun getFriendsInformation(friendIDs: List<String>) {
-        // Get a reference to the "users" node in your Firebase database
         val userRef = FirebaseDatabase.getInstance().getReference("users")
 
-        // Add a listener to retrieve your friends' information
         userRef.addListenerForSingleValueEvent(object : ValueEventListener,
             HolderAdapter.UserInteractionListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -75,22 +76,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     val userEmail = friendSnapshot.child("email").value.toString()
                     val userProfileImageUrl =
                         friendSnapshot.child("profileImageUrl").value.toString()
-                    val location = friendSnapshot.child("location").toString()
-                    val locationArray = location.split(",")
-                    val lastSeen = locationArray[2].toLongOrNull().toString()
-                    val user = User(userEmail, "", ""
-                        , userProfileImageUrl,lastSeen)
-                    users.add(user)
-//                    val friend = Friend(friendID)
-                    friends.add(friendID)
 
+                    getUserLastLocation(friendID) { it ->
+                        val user = User(
+                            userEmail, "", "", userProfileImageUrl, it
+                        )
+                        users.add(user)
+                        friends.add(friendID)
+                        val adapter = HolderAdapter(this, users, friends)
+                        binding.recyclerViewFriends.adapter = adapter
+                        binding.recyclerViewFriends.layoutManager =
+                            LinearLayoutManager(requireContext())
+                    }
                 }
-                // Pass the list of friends to your RecyclerView adapter to display them
-                val adapter = HolderAdapter(this, users, friends)
-                binding.recyclerViewFriends.adapter = adapter
-                binding.recyclerViewFriends.layoutManager = LinearLayoutManager(requireContext())
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.e(TAG, "Failed to retrieve users: ${error.message}")
             }
@@ -101,6 +100,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun getUserLastLocation(friendID: String, callback: (String) -> Unit) {
+        FirebaseDatabase.getInstance().getReference("users")
+            .child(friendID).child("location")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val locationString = dataSnapshot.value as String?
+                    val locationArray = locationString?.split(", ")
+                    val latitude = locationArray?.get(0)?.toDoubleOrNull()
+                    val longitude = locationArray?.get(1)?.toDoubleOrNull()
+                    val time = if ((locationArray?.size ?: 0) >= 3)
+                        locationArray?.get(2)?.toLongOrNull() else null
+                    if (latitude != null && longitude != null && time != null) {
+                        val currentDate = Date(time)
+                        val formatter = SimpleDateFormat(
+                            "yyyy-MM-dd hh:mm:ss",
+                            Locale.getDefault()
+                        )
+                        val timeLast = formatter.format(currentDate).toString()
+                        callback(timeLast)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(
+                        ContentValues.TAG,
+                        "Error getting location data",
+                        databaseError.toException()
+                    )
+                }
+            })
     }
 
 
