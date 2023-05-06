@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
 import com.example.smartstick.ui.auth.LoginFragment
+import com.example.smartstick.ui.home.HolderFragment
 import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.ui.profile.ProfileFragment
 import com.example.smartstick.ui.search.SearchFragment
@@ -17,8 +18,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val fragmentProfile = ProfileFragment()
     private val fragmentSearch = SearchFragment()
-    private val loginFragment =LoginFragment ()
+    private val loginFragment = LoginFragment ()
     private val fragmentHome = HomeFragment()
+    private val holderFragment = HolderFragment()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     fun showBottomNavigationView() {
         binding.bottomNav.visibility = View.VISIBLE
     }
