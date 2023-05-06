@@ -25,7 +25,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(){
     override fun getViewBinding(): FragmentHolderBinding =
         FragmentHolderBinding.inflate(layoutInflater)
 
-
     override fun setUp() {
         startLocationService()
     }

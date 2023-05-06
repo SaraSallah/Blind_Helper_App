@@ -1,7 +1,6 @@
 package com.example.smartstick.ui.auth
 
-import android.content.Context
-import android.content.SharedPreferences
+
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
