@@ -54,7 +54,8 @@ class LocationManager : Service(), LocationListener {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val timeInMillis = System.currentTimeMillis()
 
-        database.child("users").child(userId).child("location").setValue("$latitude, $longitude, $timeInMillis")
+        database.child("users").child(userId).child("location")
+            .setValue("$latitude, $longitude, $timeInMillis")
     }
 
     override fun onProviderDisabled(provider: String) {}
