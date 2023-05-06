@@ -37,7 +37,7 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         getLocation(userID)
     }
 
-    fun addCallBacks(){
+    private fun addCallBacks(){
         binding.btnAddRequest.setOnClickListener {
             performAction(userID)
         }
@@ -59,21 +59,6 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     }
 
     private fun checkIfUsersAreFriends(userID: String?) {
-        friendRef.child(mUser.uid)
-            .addValueEventListener(object : ValueEventListener {
-                @SuppressLint("SetTextI18n")
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                            currentState = "friend"
-                            binding.btnAddRequest.text = "You are Connected"
-
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
         friendRef.child(userID!!)
             .child(mUser.uid)
             .addValueEventListener(object : ValueEventListener {

@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MapsActivity : AppCompatActivity() {
 
@@ -55,8 +57,15 @@ class MapsActivity : AppCompatActivity() {
                     val locationArray = locationString?.split(", ")
                     val latitude = locationArray?.get(0)?.toDoubleOrNull()
                     val longitude = locationArray?.get(1)?.toDoubleOrNull()
+                    val time = if ((locationArray?.size ?: 0) >= 3)
+                        locationArray?.get(2)?.toLongOrNull() else null
 
-                    if (latitude != null && longitude != null) {
+                    if (latitude != null && longitude != null && time != null ) {
+                        val currentDate = Date(time)
+                        val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss",
+                            Locale.getDefault())
+                        val formattedDate = formatter.format(currentDate)
+                        Log.e("Map",formattedDate.toString())
                         showFriendLocationOnMap(latitude, longitude)
                     }
                 }
