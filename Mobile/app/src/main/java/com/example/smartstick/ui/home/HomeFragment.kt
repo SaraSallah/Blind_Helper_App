@@ -40,7 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
-        startLocationService()
+//        startLocationService()
         friendRef = FirebaseDatabase.getInstance().getReference("Friends")
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
@@ -135,49 +135,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
 
-    private fun startLocationService() {
-        if (isLocationPermissionGranted()) {
-            val intent = Intent(requireContext(), LocationManager::class.java)
-            requireContext().startService(intent)
-        } else {
-            requestLocationPermissions()
-        }
-    }
-
-    private fun isLocationPermissionGranted(): Boolean {
-        return ActivityCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestLocationPermissions() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            LOCATION_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startLocationService()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Location permission required to use this feature",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
+//    private fun startLocationService() {
+//        if (isLocationPermissionGranted()) {
+//            val intent = Intent(requireContext(), LocationManager::class.java)
+//            requireContext().startService(intent)
+//        } else {
+//            requestLocationPermissions()
+//        }
+//    }
+//
+//    private fun isLocationPermissionGranted(): Boolean {
+//        return ActivityCompat.checkSelfPermission(
+//            requireContext(),
+//            Manifest.permission.ACCESS_FINE_LOCATION
+//        ) == PackageManager.PERMISSION_GRANTED
+//    }
+//
+//    private fun requestLocationPermissions() {
+//        ActivityCompat.requestPermissions(
+//            requireActivity(),
+//            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//            LOCATION_PERMISSION_REQUEST_CODE
+//        )
+//    }
+//
+//    @Deprecated("Deprecated in Java")
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<String>,
+//        grantResults: IntArray,
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                startLocationService()
+//            } else {
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Location permission required to use this feature",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//        }
+//    }
 
     override fun onStart() {
         super.onStart()
@@ -191,9 +191,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             adapter.stopListening()
     }
 
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
-    }
+//    companion object {
+//        private const val LOCATION_PERMISSION_REQUEST_CODE = 100
+//    }
 
 
 }
