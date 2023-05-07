@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
 import com.example.smartstick.ui.tracking.LocationManager
@@ -16,6 +17,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(){
         FragmentHolderBinding.inflate(layoutInflater)
 
     override fun setUp() {
+        (activity as MainActivity).showBottomNavigationView()
         startLocationService()
     }
 
