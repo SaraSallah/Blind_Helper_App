@@ -1,6 +1,7 @@
 package com.example.smartstick.ui.auth
 
 
+import android.util.Log
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
@@ -12,9 +13,11 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val TAG: String =this::class.simpleName.toString()
+    private lateinit var userType : String
 
     private val fragmentRegister by lazy { RegisterFragment() }
     private val homeRelativeFragment by lazy { HomeFragment() }
+    private val holderFragment by lazy { HolderFragment() }
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
@@ -31,6 +34,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun addCallBacks() {
+        checkUserType()
         binding.btnLogin.setOnClickListener {
             getUserInputs()
             loginUser(email, password)
@@ -48,10 +52,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
-                    navigateToFragment()
+                if (it.isSuccessful ) {
+                    if( userType =="Holder"){
+                        Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
+                        replaceFragment(holderFragment)
+                    }
+                    else if( userType =="Relative"){
+                        Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
+                        replaceFragment(homeRelativeFragment)
+                    }
                 }
+
                 else
                 {
                     Toast.makeText(requireContext(), "Please,Enter correct e-mail or password"
@@ -61,14 +72,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             }}
 
 
-    private fun navigateToFragment(){
+    private fun checkUserType(){
         binding.typeGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 binding.relativeButton.id -> {
-                    replaceFragment(HomeFragment())
+                    userType ="Relative"
+                    Log.i("Tag",userType)
                 }
                 binding.holderButton.id -> {
-                    replaceFragment(HolderFragment())
+                    userType = "Holder"
+                    Log.i("Tag",userType)
+
                 }
             }
         }
