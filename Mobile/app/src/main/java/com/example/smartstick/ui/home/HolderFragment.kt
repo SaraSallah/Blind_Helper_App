@@ -31,7 +31,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(){
         startLocationService()
     }
 
-    fun makeCall(view: View){
+    private fun makeCall(view: View){
         FirebaseDatabase.getInstance().reference.child("users")
             .child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(object:
                 ValueEventListener {
@@ -44,7 +44,14 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(){
                 override fun onCancelled(error: DatabaseError) {}
             })}
 
-
+    private fun getCurrentDateAndTimeInArabic(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ar"))
+        val timeFormat = SimpleDateFormat("hh:mm:ss a", Locale("ar"))
+        val date = dateFormat.format(calendar.time)
+        val time = timeFormat.format(calendar.time)
+        return "التاريخ: $date\nالوقت: $time"
+    }
 
     private fun startLocationService() {
         if (isLocationPermissionGranted()) {
