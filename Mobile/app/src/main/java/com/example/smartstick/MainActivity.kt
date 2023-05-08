@@ -1,6 +1,9 @@
 package com.example.smartstick
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,7 +24,9 @@ class MainActivity : AppCompatActivity() {
     private val loginFragment = LoginFragment ()
     private val fragmentHome = HomeFragment()
     private val holderFragment = HolderFragment()
+    private lateinit var userType :String
     private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPreferences :SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +40,16 @@ class MainActivity : AppCompatActivity() {
     private fun addNavigationBottomListener(){
         binding.bottomNav.setOnItemSelectedListener {item ->
             when(item.itemId){
-                R.id.homeFragment ->{
-                    replaceFragment(fragmentHome)
+                R.id.homeFragment -> {
+                    sharedPreferences = getSharedPreferences("user_type", Context.MODE_PRIVATE)
+                    userType = sharedPreferences.getString("type", "") ?: ""
+                    if (userType == "Holder") {
+                        Log.i("Home","Holder")
+                        replaceFragment(holderFragment)
+                    } else if (userType == "Relative") {
+                        Log.i("Home","Relative")
+                        replaceFragment(fragmentHome)
+                    }
                     true
                 }
                 R.id.profileFragment ->{
@@ -48,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.logout ->{
+                    sharedPreferences.edit().remove("userType").apply() // Clear the user type from the shared preference
                     auth.signOut()
                     replaceFragment(loginFragment)
                     true
@@ -84,7 +98,15 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            replaceFragment(fragmentHome)
+            sharedPreferences = getSharedPreferences("user_type", Context.MODE_PRIVATE)
+            userType = sharedPreferences.getString("type", "") ?: ""
+            if (userType == "Holder") {
+                Log.i("Home","Holder")
+                replaceFragment(HolderFragment())
+            } else if (userType == "Relative") {
+                Log.i("Home","Relative")
+                replaceFragment(fragmentHome)
+            }
         }
     }
 

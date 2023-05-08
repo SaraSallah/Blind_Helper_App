@@ -1,6 +1,7 @@
 package com.example.smartstick.ui.auth
 
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.smartstick.MainActivity
@@ -78,10 +79,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 binding.relativeButton.id -> {
                     userType ="Relative"
                     Log.i("Tag",userType)
+                    val sharedPref = requireActivity().getSharedPreferences("user_type", Context.MODE_PRIVATE)
+                    with (sharedPref.edit()) {
+                        putString("type", userType)
+                        apply()
+                    }
                 }
                 binding.holderButton.id -> {
                     userType = "Holder"
                     Log.i("Tag",userType)
+                    val sharedPref = requireActivity().getSharedPreferences("user_type", Context.MODE_PRIVATE)
+                    with (sharedPref.edit()) {
+                        putString("type", userType)
+                        apply()
+                    }
 
                 }
             }
