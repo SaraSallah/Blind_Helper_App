@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.SpeechRecognizer
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -20,7 +23,9 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class HolderFragment : BaseFragment<FragmentHolderBinding>(){
+class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
+    private lateinit var voiceRecognitionManager: VoiceRecognitionManager
+
     override val TAG: String = this::class.simpleName.toString()
 
     override fun getViewBinding(): FragmentHolderBinding =
@@ -29,16 +34,42 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(){
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
         startLocationService()
+        voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
+        binding.start.setOnClickListener {
+            voiceRecognitionManager.startListening()
+        }
+
     }
 
-    private fun makeCall(view: View){
+
+    override fun onResults(results: Bundle?) {
+        val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
+        if (text != null) {
+            // Update the resultTextView with the recognized
+            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+
+            // Perform some action based on the recognized text
+//            if (text == "hello") {
+//                // Do something
+//            }
+        }
+    }
+
+    override fun onPartialResults(partialResults: Bundle?) {}
+
+    override fun onEvent(eventType: Int, params: Bundle?) {}
+
+
+    private fun makeCall(view: View) {
         FirebaseDatabase.getInstance().reference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(object:
+            .child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(object :
                 ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val number =snapshot.child("Relative_Number").value.toString()
-                    val intent = Intent(Intent.ACTION_DIAL,
-                        Uri.fromParts("tel", number, null))
+                    val number = snapshot.child("Relative_Number").value.toString()
+                    val intent = Intent(
+                        Intent.ACTION_DIAL,
+                        Uri.fromParts("tel", number, null)
+                    )
                     view.context.startActivity(intent)
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -97,8 +128,27 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(){
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        voiceRecognitionManager.destroy()
+    }
+
+    override fun onReadyForSpeech(params: Bundle?) {}
+
+    override fun onBeginningOfSpeech() {}
+
+    override fun onRmsChanged(rmsdB: Float) {}
+
+    override fun onBufferReceived(buffer: ByteArray?) {}
+
+    override fun onEndOfSpeech() {}
+
+    override fun onError(error: Int) {}
+
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
+
 
 }
