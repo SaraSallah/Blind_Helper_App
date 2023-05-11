@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -38,20 +39,21 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         binding.start.setOnClickListener {
             voiceRecognitionManager.startListening()
         }
-
+       getCurrentDateAndTime()
     }
-
 
     override fun onResults(results: Bundle?) {
         val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
         if (text != null) {
-            // Update the resultTextView with the recognized
-            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
-
-            // Perform some action based on the recognized text
-//            if (text == "hello") {
-//                // Do something
-//            }
+//            // Update the resultTextView with the recognized
+//            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+            // Check if the recognized text contains a destination
+            val destinationRegx = Regex("(navigate to | go to ) (.+)")
+            val matchResult = destinationRegx.find(text.toLowerCase())
+            if(matchResult != null) {
+                val destination = matchResult.groupValues[2]
+                startNavigation(destination, "walking")
+            }
         }
     }
 
@@ -72,17 +74,42 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                     )
                     view.context.startActivity(intent)
                 }
-                override fun onCancelled(error: DatabaseError) {}
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("makeCall", "Database error occurred: ${error.message}")
+                }
             })}
 
-    private fun getCurrentDateAndTimeInArabic(): String {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ar"))
-        val timeFormat = SimpleDateFormat("hh:mm:ss a", Locale("ar"))
-        val date = dateFormat.format(calendar.time)
-        val time = timeFormat.format(calendar.time)
-        return "التاريخ: $date\nالوقت: $time"
+    private fun startNavigation(destination: String, mode: String) {
+        val directionsMode = when (mode.toLowerCase()) {
+            "walking" -> "w"
+            "driving" -> "d"
+            else -> "d"  }
+        val uri = Uri.parse("google.navigation:q=$destination&mode=$directionsMode")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
+
+
+    //according to the device's language...
+    private fun getCurrentDateAndTime(locale: Locale = Locale.getDefault()): String{
+        val calender = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", locale)
+        val timeFormat = SimpleDateFormat("hh:mm:ss a" , locale)
+        val date = dateFormat.format(calender.time)
+        val time = timeFormat.format(calender.time)
+        return "Date: $date\nTime: $time"
+    }
+
+//    private fun getCurrentDateAndTimeInArabic(): String {
+//        val calendar = Calendar.getInstance()
+//        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ar"))
+//        val timeFormat = SimpleDateFormat("hh:mm:ss a", Locale("ar"))
+//        val date = dateFormat.format(calendar.time)
+//        val time = timeFormat.format(calendar.time)
+//        return "التاريخ: $date\nالوقت: $time"
+//    }
 
     private fun startLocationService() {
         if (isLocationPermissionGranted()) {
@@ -130,7 +157,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         voiceRecognitionManager.destroy()
     }
 
@@ -149,6 +175,4 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
-
-
 }

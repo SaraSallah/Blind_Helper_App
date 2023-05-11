@@ -27,7 +27,7 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
             )
         } else {
             // Permission has already been granted, initialize SpeechRecognizer
-            initSpeechRecognizer()
+           initSpeechRecognizer()
         }
     }
 
