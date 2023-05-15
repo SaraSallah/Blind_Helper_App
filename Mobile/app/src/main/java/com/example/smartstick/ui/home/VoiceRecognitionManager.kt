@@ -16,18 +16,17 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
     private lateinit var speechRecognizer: SpeechRecognizer
 
     init {
-        // Check if we have RECORD_AUDIO permission, request it if not
+
+        // Permission has already been granted, initialize SpeechRecognizer
+        initSpeechRecognizer()
+//        // Check if we have RECORD_AUDIO permission, request it if not
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(Manifest.permission.RECORD_AUDIO),
-                REQUEST_RECORD_AUDIO_PERMISSION_CODE
-            )
-        } else {
-            // Permission has already been granted, initialize SpeechRecognizer
-           initSpeechRecognizer()
+             != PackageManager.PERMISSION_GRANTED){
+               ActivityCompat.requestPermissions(
+                   activity,
+                   arrayOf(Manifest.permission.RECORD_AUDIO),
+                   REQUEST_RECORD_AUDIO_PERMISSION_CODE
+               )
         }
     }
 
