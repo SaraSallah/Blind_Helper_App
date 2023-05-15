@@ -148,6 +148,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editText_location"/>
 
+            <Button
+                android:id="@+id/btn_updateData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_shape"
+                android:text="@string/update_location"
+                android:textAllCaps="false"
+                android:textColor="@color/white_100"
+                android:textSize="@dimen/text_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.75"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_saveData" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
