@@ -46,7 +46,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
         if (text != null) {
 //            // Update the resultTextView with the recognized
-//            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
             // Check if the recognized text contains a destination
             val destinationRegx = Regex("(navigate to | go to ) (.+)")
             val matchResult = destinationRegx.find(text.toLowerCase())
