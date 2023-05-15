@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -26,6 +27,8 @@ import java.util.Locale
 
 class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
+    private lateinit var textToSpeech: TextToSpeech
+
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -35,11 +38,24 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
         startLocationService()
+
         voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
+        textToSpeech = TextToSpeech(requireContext())
+        { status ->
+            if (status == TextToSpeech.SUCCESS) {
+//                textToSpeech.language = Locale("ar")
+            }
+        }
         binding.start.setOnClickListener {
             voiceRecognitionManager.startListening()
+
         }
-       getCurrentDateAndTime()
+
+
+        binding.ens.setOnClickListener {
+            val dateAndTime = getCurrentDateAndTime()
+            textToSpeech.speak(dateAndTime, TextToSpeech.QUEUE_FLUSH, null, null)
+        }
     }
 
     override fun onResults(results: Bundle?) {
@@ -47,10 +63,17 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         if (text != null) {
 //            // Update the resultTextView with the recognized
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+
+            if (text.contains("اتصل", ignoreCase = true)) {
+                makeCall(requireView())
+            }
+            if (text.contains("make call", ignoreCase = true)) {
+                makeCall(requireView())
+            }
             // Check if the recognized text contains a destination
             val destinationRegx = Regex("(navigate to | go to ) (.+)")
             val matchResult = destinationRegx.find(text.toLowerCase())
-            if(matchResult != null) {
+            if (matchResult != null) {
                 val destination = matchResult.groupValues[2]
                 startNavigation(destination, "walking")
             }
@@ -67,7 +90,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             .child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(object :
                 ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val number = snapshot.child("Relative_Number").value.toString()
+                    val number = snapshot.child("Relative Number").value.toString()
                     val intent = Intent(
                         Intent.ACTION_DIAL,
                         Uri.fromParts("tel", number, null)
@@ -93,23 +116,14 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
 
 
     //according to the device's language...
-    private fun getCurrentDateAndTime(locale: Locale = Locale.getDefault()): String{
+    private fun getCurrentDateAndTime(locale: Locale = Locale.getDefault()): String {
         val calender = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd MMMM yyyy", locale)
-        val timeFormat = SimpleDateFormat("hh:mm:ss a" , locale)
+        val timeFormat = SimpleDateFormat("hh:mm:ss a", locale)
         val date = dateFormat.format(calender.time)
         val time = timeFormat.format(calender.time)
         return "Date: $date\nTime: $time"
     }
-
-//    private fun getCurrentDateAndTimeInArabic(): String {
-//        val calendar = Calendar.getInstance()
-//        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ar"))
-//        val timeFormat = SimpleDateFormat("hh:mm:ss a", Locale("ar"))
-//        val date = dateFormat.format(calendar.time)
-//        val time = timeFormat.format(calendar.time)
-//        return "التاريخ: $date\nالوقت: $time"
-//    }
 
     private fun startLocationService() {
         if (isLocationPermissionGranted()) {
