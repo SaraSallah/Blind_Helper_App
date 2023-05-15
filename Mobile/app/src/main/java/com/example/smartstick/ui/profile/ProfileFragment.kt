@@ -36,7 +36,26 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     private fun addCallBacks(){
         binding.btnSaveData.setOnClickListener {
             updateRelativeNumber()
+            addAddressInDataBase()
+        }
+        binding.btnUpdateData.setOnClickListener {
             getMyHomeLocation()
+        }
+
+    }
+
+    private fun addAddressInDataBase(){
+        val address = binding.editTextLocation.text.toString()
+
+        mUserRef!!.child(mUser!!.uid).child("Address").setValue(address).addOnCompleteListener{task ->
+            if(task.isSuccessful){
+                log("update address")
+            }
+            else
+            {
+                log( "Failed!!")
+            }
+
         }
     }
 
@@ -77,7 +96,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
              }
      }
 
-    private fun getMyHomeLocation(){
+    private fun
+            getMyHomeLocation(){
         mUserRef!!.child(mUser!!.uid).child("location")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
