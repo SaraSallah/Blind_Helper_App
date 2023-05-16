@@ -17,10 +17,14 @@ import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
 import com.example.smartstick.ui.tracking.LocationManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.snapshots
+import com.google.firebase.database.ktx.values
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -28,7 +32,9 @@ import java.util.Locale
 class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
     private lateinit var textToSpeech: TextToSpeech
-
+    private var mUserRef: DatabaseReference? = null
+    private lateinit var mAuth: FirebaseAuth
+    private var mUser: FirebaseUser? = null
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -37,6 +43,10 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
+
+        mAuth = FirebaseAuth.getInstance()
+        mUser = mAuth.currentUser
+        mUserRef = FirebaseDatabase.getInstance().getReference("users")
         startLocationService()
 
         voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
@@ -46,15 +56,29 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
 //                textToSpeech.language = Locale("ar")
             }
         }
-        binding.start.setOnClickListener {
+        binding.startRecord.setOnClickListener {
             voiceRecognitionManager.startListening()
 
         }
 
 
-        binding.ens.setOnClickListener {
+        binding.cardDate.setOnClickListener {
             val dateAndTime = getCurrentDateAndTime()
             textToSpeech.speak(dateAndTime, TextToSpeech.QUEUE_FLUSH, null, null)
+        }
+        binding.cardMakeCall.setOnClickListener{
+            makeCall(requireView())
+        }
+        binding.cardNavigation.setOnClickListener {
+            mUserRef?.child(mUser!!.uid)?.child("Address")?.get()?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val address = task.result?.value.toString()
+                    log(address)
+                    startNavigation(address, "w")
+                } else {
+                    // Handle the error while retrieving the address
+                }
+            }
         }
     }
 
