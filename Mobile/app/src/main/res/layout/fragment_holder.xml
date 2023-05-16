@@ -6,21 +6,153 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HolderFragment">
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        app:layout_constraintEnd_toStartOf="@+id/ens"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/ens"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/spacing_giant"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginHorizontal="@dimen/spacing_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_holder_service">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_Placeholder"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginStart="16dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/person_navigation" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go To Home"
+                android:textSize="@dimen/text_giant"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintStart_toEndOf="@+id/lottie_Placeholder"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/card_make_call"
+        android:layout_marginTop="@dimen/spacing_giant"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/spacing_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_navigation">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_holder_service">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/navigation"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/spacing_small"
+                android:layout_marginStart="16dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+               android:src="@drawable/call" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/make_call"
+                android:textSize="@dimen/text_giant"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/navigation"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_date"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="@dimen/spacing_giant"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/spacing_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_make_call">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_holder_service">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_margin="@dimen/spacing_small"
+                android:id="@+id/date_time"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginStart="16dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:src="@drawable/date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_and_time"
+                android:textSize="@dimen/text_giant"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintStart_toEndOf="@+id/date_time"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+<!--    <ImageButton-->
+<!--        android:id="@+id/start_record"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="640dp"-->
+<!--        android:src="raw"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/ens"-->
+<!--        app:layout_constraintHorizontal_bias="0.396"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/start_record"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_date"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/record" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
