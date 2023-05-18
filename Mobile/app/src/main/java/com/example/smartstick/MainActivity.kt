@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity() {
                     alertDialog.show()
                     true
                 }
-
                 else -> false
             }
         }
