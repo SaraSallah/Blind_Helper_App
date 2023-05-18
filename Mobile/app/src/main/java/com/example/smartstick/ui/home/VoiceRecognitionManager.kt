@@ -1,7 +1,7 @@
 package com.example.smartstick.ui.home
+
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -16,10 +16,9 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
     private lateinit var speechRecognizer: SpeechRecognizer
 
     init {
-
         // Permission has already been granted, initialize SpeechRecognizer
         initSpeechRecognizer()
-//        // Check if we have RECORD_AUDIO permission, request it if not
+       // Check if we have RECORD_AUDIO permission, request it if not
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO)
              != PackageManager.PERMISSION_GRANTED){
                ActivityCompat.requestPermissions(
@@ -42,9 +41,9 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
         speechRecognizer.startListening(intent)
     }
 
-    fun stopListening() {
-        speechRecognizer.stopListening()
-    }
+//    fun stopListening() {
+//        speechRecognizer.stopListening()
+//    }
 
     fun destroy() {
         speechRecognizer.destroy()
@@ -79,9 +78,7 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
             val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
             if (text != null) {
                 // Perform some action based on the recognized text
-                if (text == "hello") {
-                    // Do something
-                }
+                if (text == "hello") { }
             }
             listener.onResults(results)
         }

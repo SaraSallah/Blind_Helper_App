@@ -1,6 +1,7 @@
 package com.example.smartstick.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -13,6 +14,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.smartstick.MainActivity
+import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
 import com.example.smartstick.ui.tracking.LocationManager
@@ -50,15 +52,12 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
         textToSpeech = TextToSpeech(requireContext())
         { status ->
-            if (status == TextToSpeech.SUCCESS) {
-//                textToSpeech.language = Locale("ar")
-            }
+            if (status == TextToSpeech.SUCCESS) { }
         }
         binding.startRecord.setOnClickListener {
             voiceRecognitionManager.startListening()
 
         }
-
 
         binding.cardDate.setOnClickListener {
             val dateAndTime = getCurrentDateAndTime()
@@ -85,7 +84,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                     if (latitude != null && longitude != null) {
                         log("$latitude , $longitude")
                         startNavigation(latitude, longitude, "w")
-
                     }
                 }
 
@@ -99,7 +97,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     override fun onResults(results: Bundle?) {
         val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
         if (text != null) {
-//            // Update the resultTextView with the recognized
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
 
             if (text.contains("اتصل", ignoreCase = true)) {
@@ -109,7 +106,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 makeCall(requireView())
             }
             // Check if the recognized text contains a destination
-            val destinationRegx = Regex("(navigate to | go to ) (.+)")
+            val destinationRegx = Regex(getString(R.string.navigate_to_go_to))
             val matchResult = destinationRegx.find(text.toLowerCase())
             if (matchResult != null) {
                 val destination = matchResult.groupValues[2]
@@ -142,6 +139,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             })
     }
 
+    @SuppressLint("DefaultLocale")
     private fun startNavigation(latitude: Double, longitude: Double, mode: String) {
         val directionsMode = when (mode.toLowerCase()) {
             "walking" -> "w"
@@ -154,19 +152,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
-
-//    private fun startNavigation(destination: String, mode: String) {
-//        val directionsMode = when (mode.toLowerCase()) {
-//            "walking" -> "w"
-//            "driving" -> "d"
-//            else -> "d"  }
-//        val uri = Uri.parse("google.navigation:q=$destination&mode=$directionsMode")
-//        val intent = Intent(Intent.ACTION_VIEW, uri)
-//        intent.setPackage("com.google.android.apps.maps")
-//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        startActivity(intent)
-//    }
-
 
     //according to the device's language...
     private fun getCurrentDateAndTime(locale: Locale = Locale.getDefault()): String {
@@ -243,3 +228,4 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
 }
+

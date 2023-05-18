@@ -45,7 +45,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.btnUpdateData.setOnClickListener {
             getMyHomeLocation()
         }
-
     }
 
     private fun addAddressInDataBase() {
@@ -79,10 +78,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     )
                 }
             })
-
-
     }
-
 
     private fun loadAccountData() {
         mUserRef!!.child(mUser!!.uid).addValueEventListener(object : ValueEventListener {
