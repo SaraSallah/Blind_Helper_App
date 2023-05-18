@@ -55,6 +55,7 @@
         android:id="@+id/card_make_call"
         android:layout_margin="@dimen/spacing_medium"
         app:cardCornerRadius="@dimen/spacing_medium"
+        android:elevation="@dimen/spacing_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_navigation">
@@ -95,9 +96,11 @@
         android:layout_height="150dp"
         android:layout_margin="@dimen/spacing_medium"
         app:cardCornerRadius="@dimen/spacing_medium"
+        android:elevation="@dimen/spacing_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_make_call">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
