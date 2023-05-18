@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
@@ -61,13 +62,23 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.logout ->{
-                    sharedPreferences.edit().remove("userType").apply() // Clear the user type from the shared preference
-                    auth.signOut()
-                    replaceFragment(loginFragment)
+                    val alertDialog = AlertDialog.Builder(this)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            sharedPreferences.edit().remove("userType").apply() // Clear the user type from the shared preference
+                            auth.signOut()
+                            replaceFragment(loginFragment)
+                        }
+                        .setNegativeButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                    alertDialog.show()
                     true
                 }
-                else -> false
 
+                else -> false
             }
         }
     }
