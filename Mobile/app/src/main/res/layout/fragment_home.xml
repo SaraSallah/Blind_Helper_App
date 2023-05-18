@@ -18,14 +18,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Holder"
-        android:textSize="@dimen/text_giant"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/my_holders"
+        android:textColor="@color/white_100"
+        android:textSize="@dimen/text_Xgiant"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_friends"
