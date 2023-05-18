@@ -10,7 +10,11 @@ import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.io.IOException
 
 
@@ -44,20 +48,41 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     }
 
-    private fun addAddressInDataBase(){
-        val address = binding.editTextLocation.text.toString()
+    private fun addAddressInDataBase() {
+        mUserRef!!.child(mUser!!.uid).child("location")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val locationString = dataSnapshot.value as String?
+                    val locationArray = locationString?.split(", ")
+                    val latitude = locationArray?.get(0)?.toDoubleOrNull()
+                    val longitude = locationArray?.get(1)?.toDoubleOrNull()
 
-        mUserRef!!.child(mUser!!.uid).child("Address").setValue(address).addOnCompleteListener{task ->
-            if(task.isSuccessful){
-                log("update address")
-            }
-            else
-            {
-                log( "Failed!!")
-            }
+                    if (latitude != null && longitude != null) {
+                        mUserRef!!.child(mUser!!.uid).child("Address")
+                            .setValue("$latitude, $longitude")
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    log("update address")
+                                } else {
+                                    log("Failed!!")
+                                }
 
-        }
+                            }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(
+                        ContentValues.TAG,
+                        "Error getting location data",
+                        databaseError.toException()
+                    )
+                }
+            })
+
+
     }
+
 
     private fun loadAccountData() {
         mUserRef!!.child(mUser!!.uid).addValueEventListener(object : ValueEventListener {
@@ -96,8 +121,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
              }
      }
 
-    private fun
-            getMyHomeLocation(){
+    private fun getMyHomeLocation() {
         mUserRef!!.child(mUser!!.uid).child("location")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -107,7 +131,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     val longitude = locationArray?.get(1)?.toDoubleOrNull()
 
                     if (latitude != null && longitude != null) {
-                       val address= getAddressLocation(requireContext(),latitude,longitude)
+                        val address = getAddressLocation(requireContext(), latitude, longitude)
                         binding.editTextLocation.setText(address)
                     }
                 }
@@ -121,7 +145,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         val geocoder = Geocoder(context)
         try {
             val addressList = geocoder.getFromLocation(latitude, longitude, 1)
-            if (addressList != null && addressList.isNotEmpty()) {
+            if (!addressList.isNullOrEmpty()) {
                 return addressList[0].getAddressLine(0) ?: ""
             }
         } catch (e: IOException) {
