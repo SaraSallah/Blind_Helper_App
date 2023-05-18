@@ -9,23 +9,23 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_navigation"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="@dimen/spacing_giant"
+        android:layout_height="140dp"
+        android:layout_margin="@dimen/spacing_medium"
+        app:cardCornerRadius="@dimen/spacing_medium"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/spacing_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/card_holder_service">
+            android:background="@color/primary_200">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_Placeholder"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/spacing_medium"
-                android:layout_marginStart="16dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +37,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Go To Home"
-                android:textSize="@dimen/text_giant"
+                android:text="@string/go_to_home"
+                android:textSize="@dimen/text_Xgiant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:fontFamily="sans-serif-medium"
@@ -51,57 +51,57 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="140dp"
         android:id="@+id/card_make_call"
-        android:layout_marginTop="@dimen/spacing_giant"
+        android:layout_margin="@dimen/spacing_medium"
+        app:cardCornerRadius="@dimen/spacing_medium"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/spacing_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_navigation">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/card_holder_service">
+            android:background="@color/primary_200">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/navigation"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/spacing_small"
-                android:layout_marginStart="16dp"
-                android:visibility="visible"
+                android:layout_marginHorizontal="@dimen/spacing_small"
+                android:layout_marginVertical="@dimen/spacing_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-               android:src="@drawable/call" />
+                android:src="@drawable/call" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/make_call"
-                android:textSize="@dimen/text_giant"
+                android:textSize="@dimen/text_Xgiant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/navigation"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_date"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginTop="@dimen/spacing_giant"
+        android:layout_margin="@dimen/spacing_medium"
+        app:cardCornerRadius="@dimen/spacing_medium"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/spacing_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_make_call">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/card_holder_service">
+            android:background="@color/primary_200">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_margin="@dimen/spacing_small"
@@ -109,7 +109,6 @@
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/spacing_medium"
-                android:layout_marginStart="16dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -122,7 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/date_and_time"
-                android:textSize="@dimen/text_giant"
+                android:textColor="@color/white_100"
+                android:textSize="@dimen/text_Xgiant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:fontFamily="sans-serif-medium"
@@ -132,6 +132,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 <!--    <ImageButton-->
 <!--        android:id="@+id/start_record"-->
 <!--        android:layout_width="wrap_content"-->
@@ -142,6 +143,7 @@
 <!--        app:layout_constraintHorizontal_bias="0.396"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/start_record"
         android:layout_width="300dp"
@@ -149,8 +151,10 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_date"
+        app:layout_constraintVertical_bias="0.203"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/record" />
