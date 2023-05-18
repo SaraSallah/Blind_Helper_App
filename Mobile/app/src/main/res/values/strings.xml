@@ -41,4 +41,5 @@
     <string name="make_call">Make Call</string>
     <string name="go_to_home">Go To Home</string>
     <string name="navigate_to_go_to">(navigate to | go to ) (.+)</string>
+    <string name="last_seen">Last Seen:</string>
 </resources>
