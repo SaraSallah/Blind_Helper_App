@@ -48,27 +48,31 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         mUser = mAuth.currentUser
         mUserRef = FirebaseDatabase.getInstance().getReference("users")
         startLocationService()
-
         voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
         textToSpeech = TextToSpeech(requireContext())
         { status ->
             if (status == TextToSpeech.SUCCESS) { }
         }
+
+        addCallBacks()
+    }
+
+    private fun addCallBacks(){
         binding.startRecord.setOnClickListener {
             voiceRecognitionManager.startListening()
-
         }
 
         binding.cardDate.setOnClickListener {
             val dateAndTime = getCurrentDateAndTime()
             textToSpeech.speak(dateAndTime, TextToSpeech.QUEUE_FLUSH, null, null)
         }
+
         binding.cardMakeCall.setOnClickListener {
             makeCall(requireView())
         }
+
         binding.cardNavigation.setOnClickListener {
             getAddressFromDatabaseAndGoToHome()
-
         }
     }
 
