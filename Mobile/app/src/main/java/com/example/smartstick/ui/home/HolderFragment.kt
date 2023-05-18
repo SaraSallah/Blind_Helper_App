@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.snapshots
-import com.google.firebase.database.ktx.values
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -66,21 +64,37 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             val dateAndTime = getCurrentDateAndTime()
             textToSpeech.speak(dateAndTime, TextToSpeech.QUEUE_FLUSH, null, null)
         }
-        binding.cardMakeCall.setOnClickListener{
+        binding.cardMakeCall.setOnClickListener {
             makeCall(requireView())
         }
         binding.cardNavigation.setOnClickListener {
-            mUserRef?.child(mUser!!.uid)?.child("Address")?.get()?.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val address = task.result?.value.toString()
-                    log(address)
-                    startNavigation(address, "w")
-                } else {
-                    // Handle the error while retrieving the address
-                }
-            }
+            getAddressFromDatabaseAndGoToHome()
+
         }
     }
+
+    private fun getAddressFromDatabaseAndGoToHome() {
+        mUserRef?.child(mUser!!.uid)?.child("Address")
+            ?.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val locationString = dataSnapshot.value as String?
+                    val locationArray = locationString?.split(", ")
+                    val latitude = locationArray?.get(0)?.toDoubleOrNull()
+                    val longitude = locationArray?.get(1)?.toDoubleOrNull()
+
+                    if (latitude != null && longitude != null) {
+                        log("$latitude , $longitude")
+                        startNavigation(latitude, longitude, "w")
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+
 
     override fun onResults(results: Bundle?) {
         val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
@@ -99,7 +113,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             val matchResult = destinationRegx.find(text.toLowerCase())
             if (matchResult != null) {
                 val destination = matchResult.groupValues[2]
-                startNavigation(destination, "walking")
+                startNavigation(37.7749, -122.4194, "walking")
             }
         }
     }
@@ -121,22 +135,37 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                     )
                     view.context.startActivity(intent)
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("makeCall", "Database error occurred: ${error.message}")
                 }
-            })}
+            })
+    }
 
-    private fun startNavigation(destination: String, mode: String) {
+    private fun startNavigation(latitude: Double, longitude: Double, mode: String) {
         val directionsMode = when (mode.toLowerCase()) {
             "walking" -> "w"
             "driving" -> "d"
-            else -> "d"  }
-        val uri = Uri.parse("google.navigation:q=$destination&mode=$directionsMode")
+            else -> "d"
+        }
+        val uri = Uri.parse("google.navigation:q=$latitude,$longitude&mode=$directionsMode")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.google.android.apps.maps")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
+
+//    private fun startNavigation(destination: String, mode: String) {
+//        val directionsMode = when (mode.toLowerCase()) {
+//            "walking" -> "w"
+//            "driving" -> "d"
+//            else -> "d"  }
+//        val uri = Uri.parse("google.navigation:q=$destination&mode=$directionsMode")
+//        val intent = Intent(Intent.ACTION_VIEW, uri)
+//        intent.setPackage("com.google.android.apps.maps")
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        startActivity(intent)
+//    }
 
 
     //according to the device's language...
