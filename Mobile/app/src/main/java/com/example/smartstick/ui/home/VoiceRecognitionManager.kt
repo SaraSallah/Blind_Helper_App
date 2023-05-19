@@ -11,14 +11,13 @@ import android.speech.SpeechRecognizer
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-class VoiceRecognitionManager(private val activity: Activity, private val listener: RecognitionListener) {
-
-    private lateinit var speechRecognizer: SpeechRecognizer
+class VoiceRecognitionManager(private val activity: Activity,
+                              private val listener: RecognitionListener)
+{
+      private lateinit var speechRecognizer: SpeechRecognizer
 
     init {
-        // Permission has already been granted, initialize SpeechRecognizer
         initSpeechRecognizer()
-       // Check if we have RECORD_AUDIO permission, request it if not
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.RECORD_AUDIO)
              != PackageManager.PERMISSION_GRANTED){
                ActivityCompat.requestPermissions(
@@ -29,7 +28,7 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
         }
     }
 
-    private fun initSpeechRecognizer() {
+    private fun initSpeechRecognizer(){
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity)
         speechRecognizer.setRecognitionListener(MyRecognitionListener())
     }
@@ -40,10 +39,6 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
         intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
         speechRecognizer.startListening(intent)
     }
-
-//    fun stopListening() {
-//        speechRecognizer.stopListening()
-//    }
 
     fun destroy() {
         speechRecognizer.destroy()
@@ -58,8 +53,8 @@ class VoiceRecognitionManager(private val activity: Activity, private val listen
             listener.onBeginningOfSpeech()
         }
 
-        override fun onRmsChanged(rmsdB: Float) {
-            listener.onRmsChanged(rmsdB)
+        override fun onRmsChanged(rms: Float) {
+            listener.onRmsChanged(rms)
         }
 
         override fun onBufferReceived(buffer: ByteArray?) {
