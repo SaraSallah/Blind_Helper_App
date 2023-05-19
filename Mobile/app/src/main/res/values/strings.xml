@@ -35,4 +35,13 @@
     <string name="your_location">Your Location</string>
     <string name="location">El-Nozha</string>
     <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="update_location">Update Location</string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="make_call">Make Call</string>
+    <string name="go_to_home">Go To Home</string>
+    <string name="navigate_to_go_to">(navigate to | go to ) (.+)</string>
+    <string name="last_seen">Last Seen:</string>
+    <string name="my_holders">My Holders</string>
+    <string name="home">Home</string>
 </resources>

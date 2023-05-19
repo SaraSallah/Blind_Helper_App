@@ -1,6 +1,5 @@
 package com.example.smartstick.ui.search
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartstick.R
 import com.example.smartstick.data.User
 import com.example.smartstick.databinding.SingleViewFindFriendBinding
-import com.example.smartstick.ui.profile.ProfileFragment
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
@@ -21,15 +19,12 @@ class SearchAdapter (
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.single_view_find_friend, parent, false)
         return ViewHolder(view)
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: User) {
         holder.binding.userEmail.text = model.email
         holder.binding.root.setOnClickListener { listener.onClickUser(getRef(position).key.toString()) }
     }
-
-
 
     class ViewHolder(viewItem: View) :
         RecyclerView.ViewHolder(viewItem) {
@@ -39,6 +34,5 @@ class SearchAdapter (
     interface UserInteractionListener {
         fun onClickUser(userID: String)
     }
-
 }
 
