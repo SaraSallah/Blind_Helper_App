@@ -12,6 +12,7 @@
         android:layout_height="140dp"
         android:layout_margin="@dimen/spacing_medium"
         app:cardCornerRadius="@dimen/spacing_medium"
+        android:contentDescription="@string/go_to_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -57,6 +58,7 @@
         android:layout_margin="@dimen/spacing_medium"
         app:cardCornerRadius="@dimen/spacing_medium"
         android:elevation="@dimen/spacing_small"
+        android:contentDescription="@string/make_call"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_navigation">
@@ -99,6 +101,7 @@
         android:layout_margin="@dimen/spacing_medium"
         app:cardCornerRadius="@dimen/spacing_medium"
         android:elevation="@dimen/spacing_small"
+        android:contentDescription="@string/date_and_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/card_make_call">
@@ -138,17 +141,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/start_record"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="640dp"-->
-<!--        android:src="raw"-->
-<!--        app:layout_constraintEnd_toStartOf="@+id/ens"-->
-<!--        app:layout_constraintHorizontal_bias="0.396"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/start_record"
         android:layout_width="300dp"
@@ -159,7 +151,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_date"
-        app:layout_constraintVertical_bias="0.088"
+        app:layout_constraintVertical_bias="0.0"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/record" />

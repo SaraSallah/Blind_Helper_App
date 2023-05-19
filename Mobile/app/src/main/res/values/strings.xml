@@ -43,4 +43,5 @@
     <string name="navigate_to_go_to">(navigate to | go to ) (.+)</string>
     <string name="last_seen">Last Seen:</string>
     <string name="my_holders">My Holders</string>
+    <string name="home">Home</string>
 </resources>
