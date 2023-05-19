@@ -231,5 +231,5 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     }
-}
 
+}
