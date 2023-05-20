@@ -66,6 +66,7 @@
     <style name="bottomNavigation" parent="">
         <item name="backgroundTint">@color/white_100</item>
     </style>
+
     <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="android:scaleType">centerCrop</item>
