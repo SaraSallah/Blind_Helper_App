@@ -118,6 +118,9 @@ class MainActivity : AppCompatActivity() {
                 replaceFragment(fragmentHome)
             }
         }
+        else{
+            replaceFragment(loginFragment)
+        }
     }
 
 
