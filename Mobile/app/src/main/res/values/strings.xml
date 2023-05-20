@@ -48,4 +48,5 @@
     <string name="search">Search</string>
     <string name="profile_bottom">Profile</string>
     <string name="logout">Logout</string>
+    <string name="relative_number">Relative Number</string>
 </resources>
