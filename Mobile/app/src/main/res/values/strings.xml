@@ -44,4 +44,8 @@
     <string name="last_seen">Last Seen:</string>
     <string name="my_holders">My Holders</string>
     <string name="home">Home</string>
+    <string name="home_bottom">Home</string>
+    <string name="search">Search</string>
+    <string name="profile_bottom">Profile</string>
+    <string name="logout">Logout</string>
 </resources>
