@@ -26,8 +26,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
+
 
 class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
@@ -53,6 +53,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         { status ->
             if (status == TextToSpeech.SUCCESS) { }
         }
+
 
         addCallBacks()
     }
@@ -102,7 +103,26 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
         if (text != null) {
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
-
+            val strings = text.trim().split(" ")
+            if ((strings.size
+                    ?: 0) >= 3
+                && strings.getOrNull(0) == "go"
+                && strings.getOrNull(1) == "to"
+            ) {
+                val wordsAfterTwo = strings.subList(2, strings.size)
+                for (word in wordsAfterTwo) {
+                    startNavigation(word, "w")
+                }
+            }
+            if ((strings.size
+                    ?: 0) >= 3
+                && strings.getOrNull(0) == "اذهب"
+                && strings.getOrNull(1) == "الى"
+            ) {
+                val thirdString = strings.getOrNull(2)
+                if (thirdString != null) {
+                    startNavigation(thirdString, "w")                }
+            }
             if (text.contains("اتصل", ignoreCase = true)) {
                 makeCall(requireView())
             }
@@ -118,6 +138,8 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             }
         }
     }
+
+
 
     override fun onPartialResults(partialResults: Bundle?) {}
 
@@ -151,6 +173,19 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             else -> "d"
         }
         val uri = Uri.parse("google.navigation:q=$latitude,$longitude&mode=$directionsMode")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    fun startNavigation(destination: String, mode: String) {
+        val directionsMode = when (mode.toLowerCase()) {
+            "walking" -> "w"
+            "driving" -> "d"
+            else -> "d"
+        }
+        val uri = Uri.parse("google.navigation:q=$destination&mode=$directionsMode")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.google.android.apps.maps")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
