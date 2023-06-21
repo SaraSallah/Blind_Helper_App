@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
         initSubView()
         addNavigationBottomListener()
         auth = Firebase.auth
-
     }
+
     private fun addNavigationBottomListener(){
         binding.bottomNav.setOnItemSelectedListener {item ->
             when(item.itemId){
