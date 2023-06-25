@@ -110,18 +110,16 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 && strings.getOrNull(1) == "to"
             ) {
                 val wordsAfterTwo = strings.subList(2, strings.size)
-                for (word in wordsAfterTwo) {
-                    startNavigation(word, "w")
-                }
+                startNavigation(wordsAfterTwo.toString(), "w")
             }
             if ((strings.size
                     ?: 0) >= 3
                 && strings.getOrNull(0) == "اذهب"
                 && strings.getOrNull(1) == "الى"
             ) {
-                val thirdString = strings.getOrNull(2)
-                if (thirdString != null) {
-                    startNavigation(thirdString, "w")                }
+
+                val wordsAfterTwo = strings.subList(2, strings.size)
+                startNavigation(wordsAfterTwo.toString(), "w")
             }
             if (text.contains("اتصل", ignoreCase = true)) {
                 makeCall(requireView())
