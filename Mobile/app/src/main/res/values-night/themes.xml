@@ -32,11 +32,13 @@
     </style>
 
     <style name="AppTheme.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primary_200</item>
+        <item name="itemTextColor">@color/white_100</item>
+        <item name="android:color">@color/primary_300</item>
+        <item name="background">@color/white_100</item>
     </style>
 
     <style name="bottomNavigation" parent="">
-        <item name="backgroundTint">@color/black_8</item>
+        <item name="backgroundTint">@color/black_87</item>
     </style>
 
     <style name="roundedImageView">

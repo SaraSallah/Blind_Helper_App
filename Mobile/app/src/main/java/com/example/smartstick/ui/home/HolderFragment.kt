@@ -2,10 +2,12 @@ package com.example.smartstick.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.speech.RecognitionListener
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
@@ -13,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.smartstick.MainActivity
 import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
@@ -26,8 +29,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
+
 
 class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
@@ -53,6 +56,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         { status ->
             if (status == TextToSpeech.SUCCESS) { }
         }
+
 
         addCallBacks()
     }
@@ -102,6 +106,39 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.get(0)
         if (text != null) {
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+            val strings = text.trim().split(" ")
+            if ((strings.size
+                    ?: 0) >= 3
+                && strings.getOrNull(0) == "go"
+                && strings.getOrNull(1) == "to"
+            ) {
+                val wordsAfterTwo = strings.subList(2, strings.size)
+                startNavigation(wordsAfterTwo.toString(), "w")
+            }
+            if ((strings.size
+                    ?: 0) >= 3
+                && strings.getOrNull(0) == "اذهب"
+                && strings.getOrNull(1) == "الى"
+            ) {
+
+                val wordsAfterTwo = strings.subList(2, strings.size)
+                startNavigation(wordsAfterTwo.toString(), "w")
+            }
+            if ((strings.size
+                    ?: 0) >= 2
+                && strings.getOrNull(0) == "call"
+            ) {
+                val wordsAfterTwo = strings.subList(1, strings.size)
+                makeCall(wordsAfterTwo.toString())
+            }
+            if ((strings.size
+                    ?: 0) >= 3
+                && strings.getOrNull(0) == "اتصل"
+            ) {
+
+                val wordsAfterTwo = strings.subList(2, strings.size)
+                makeCall(wordsAfterTwo.toString())
+            }
 
             if (text.contains("اتصل", ignoreCase = true)) {
                 makeCall(requireView())
@@ -119,22 +156,39 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         }
     }
 
+
+
     override fun onPartialResults(partialResults: Bundle?) {}
 
     override fun onEvent(eventType: Int, params: Bundle?) {}
 
 
     private fun makeCall(view: View) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
         FirebaseDatabase.getInstance().reference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(object :
-                ValueEventListener {
+            .child(currentUser?.uid ?: "").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val number = snapshot.child("Relative Number").value.toString()
-                    val intent = Intent(
-                        Intent.ACTION_DIAL,
-                        Uri.fromParts("tel", number, null)
-                    )
-                    view.context.startActivity(intent)
+                    val number = snapshot.child("Relative Number")
+
+                    // Check if the user has granted permission to make phone calls
+                    if (ContextCompat.checkSelfPermission(
+                            view.context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            view.context as Activity,
+                            arrayOf(Manifest.permission.CALL_PHONE),
+                            1
+                        )
+                    } else {
+                        // Make the phone call
+                        val callIntent = Intent(Intent.ACTION_CALL)
+                        callIntent.data = Uri.parse("tel:$number")
+
+                        view.context.startActivity(callIntent)
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -142,6 +196,48 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 }
             })
     }
+
+    fun makeCall(conectName: String) {
+        val contactUri = Uri.withAppendedPath(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
+            Uri.encode(conectName)
+        )
+        val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+
+        val cursor = activity?.contentResolver?.query(
+            contactUri,
+            projection,
+            null,
+            null,
+            null
+        )
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                val columnIndex =
+                    cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val phoneNumber = cursor.getString(columnIndex)
+
+                val callIntent = Intent(Intent.ACTION_CALL)
+                callIntent.data = Uri.parse("tel:$phoneNumber")
+
+                if (ContextCompat.checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.CALL_PHONE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(Manifest.permission.CALL_PHONE),
+                        1
+                    )
+                } else {
+                    startActivity(callIntent)
+                }
+            }
+        }
+    }
+
 
     @SuppressLint("DefaultLocale")
     private fun startNavigation(latitude: Double, longitude: Double, mode: String) {
@@ -151,6 +247,19 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             else -> "d"
         }
         val uri = Uri.parse("google.navigation:q=$latitude,$longitude&mode=$directionsMode")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    fun startNavigation(destination: String, mode: String) {
+        val directionsMode = when (mode.toLowerCase()) {
+            "walking" -> "w"
+            "driving" -> "d"
+            else -> "d"
+        }
+        val uri = Uri.parse("google.navigation:q=$destination&mode=$directionsMode")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.google.android.apps.maps")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -186,10 +295,14 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     private fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(
             requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CALL_PHONE,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.READ_CONTACTS),
             LOCATION_PERMISSION_REQUEST_CODE
         )
     }
+
 
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
@@ -230,6 +343,8 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 100
+        private val PERMISSIONS_REQUEST_CODE = 1
+
     }
 
 }

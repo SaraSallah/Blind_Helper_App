@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_giant"
-            android:text="@string/last_seen"
+            android:text="@string/last_seen_"
             android:textColor="@color/black_60"
             android:textSize="@dimen/text_medium"
             app:drawableStartCompat="@drawable/baseline_access_time_24"
