@@ -3,10 +3,12 @@ package com.example.smartstick.ui.addrequest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentAddRequestBinding
+import com.example.smartstick.ui.SocketManager
 import com.example.smartstick.ui.tracking.MapsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -14,6 +16,7 @@ import com.google.firebase.database.*
 
 class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
     override val TAG: String = this::class.simpleName.toString()
+    private lateinit var socketManager: SocketManager
     private lateinit var friendRef :DatabaseReference
     private lateinit var requestRef :DatabaseReference
     private lateinit var mAuth : FirebaseAuth
@@ -31,10 +34,12 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
+        ReceiveSocket()
         loadUserData(userID)
         addCallBacks()
         checkUserExistence(userID)
         getLocation(userID)
+
     }
 
     private fun addCallBacks(){
@@ -48,6 +53,12 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
             val intent = Intent(requireActivity(), MapsActivity::class.java)
             intent.putExtra("holderID", userID) // pass the user ID as an extra
             startActivity(intent)
+        }
+    }
+
+    private fun ReceiveSocket(){
+        binding.btnGetLocation2.setOnClickListener {
+            Log.e("RRR", "message:Received Background Service")
         }
     }
 
