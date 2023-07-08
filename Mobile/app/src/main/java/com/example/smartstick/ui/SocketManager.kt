@@ -7,6 +7,7 @@ import io.socket.client.Socket
 
 class SocketManager (private val context: Context, private val listener: SocketListener) {
     private lateinit var socket: Socket
+    private var connected: Boolean = false
 
     fun connect() {
         try {
@@ -18,28 +19,36 @@ class SocketManager (private val context: Context, private val listener: SocketL
             setupEventHandlers()
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.e("Sara", e.toString())
+
         }
+    }
+    fun isConnected(): Boolean {
+        return connected
     }
 
     private fun listenForMessages() {
         socket.on("message") { args ->
             val message = args[0].toString()
             listener.onMessageReceived(message)
-            Log.e("rehab", "message : $message")
+            Log.e("Sara", "message 1 : $message")
         }
     }
 
     private fun setupEventHandlers() {
         socket.on(Socket.EVENT_CONNECT) {
+            connected = true
             println("Connected to the server.")
             Log.e("Sara", "Connected to the server.")
         }
 
         socket.on(Socket.EVENT_DISCONNECT) {
+            connected = false
             handleDisconnection()
         }
 
         socket.on(Socket.EVENT_CONNECT_ERROR) { args ->
+            connected = false
             val error = args[0] as Exception
             handleConnectionError(error)
         }

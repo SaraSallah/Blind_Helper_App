@@ -1,6 +1,7 @@
 package com.example.smartstick
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
+import com.example.smartstick.ui.MyBackgroundService
 import com.example.smartstick.ui.auth.LoginFragment
 import com.example.smartstick.ui.home.HolderFragment
 import com.example.smartstick.ui.home.HomeFragment
@@ -36,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         initSubView()
         addNavigationBottomListener()
         auth = Firebase.auth
+
+        val serviceIntent = Intent(this, MyBackgroundService::class.java)
+        startService(serviceIntent)
     }
 
     private fun addNavigationBottomListener(){

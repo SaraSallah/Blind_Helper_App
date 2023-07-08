@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.speech.RecognitionListener
@@ -14,6 +15,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.smartstick.MainActivity
@@ -44,6 +46,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     override fun getViewBinding(): FragmentHolderBinding =
         FragmentHolderBinding.inflate(layoutInflater)
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
 
@@ -276,6 +279,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         return "Date: $date\nTime: $time"
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun startLocationService() {
         if (isLocationPermissionGranted()) {
             val intent = Intent(requireContext(), LocationManager::class.java)
@@ -292,18 +296,22 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.CALL_PHONE,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_CONTACTS),
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+            Manifest.permission.FOREGROUND_SERVICE),
             LOCATION_PERMISSION_REQUEST_CODE
         )
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
