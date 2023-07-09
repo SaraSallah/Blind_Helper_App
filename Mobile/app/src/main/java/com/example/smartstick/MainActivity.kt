@@ -38,9 +38,22 @@ class MainActivity : AppCompatActivity() {
         initSubView()
         addNavigationBottomListener()
         auth = Firebase.auth
+        handleBackGroundServiceForHolder()
 
-        val serviceIntent = Intent(this, MyBackgroundService::class.java)
-        startService(serviceIntent)
+
+    }
+    private fun handleBackGroundServiceForHolder(){
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            sharedPreferences = getSharedPreferences("user_type", Context.MODE_PRIVATE)
+            userType = sharedPreferences.getString("type", "") ?: ""
+            if (userType == "Holder") {
+                Log.i("Home","Holder")
+
+                val serviceIntent = Intent(this, MyBackgroundService::class.java)
+                startService(serviceIntent)
+            }
+    }
     }
 
     private fun addNavigationBottomListener(){
