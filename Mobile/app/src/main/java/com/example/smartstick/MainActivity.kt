@@ -24,12 +24,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val fragmentProfile = ProfileFragment()
     private val fragmentSearch = SearchFragment()
-    private val loginFragment = LoginFragment ()
+    private val loginFragment = LoginFragment()
     private val fragmentHome = HomeFragment()
     private val holderFragment = HolderFragment()
-    private lateinit var userType :String
+    private lateinit var userType: String
     private lateinit var auth: FirebaseAuth
-    private lateinit var sharedPreferences :SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,22 +39,7 @@ class MainActivity : AppCompatActivity() {
         initSubView()
         addNavigationBottomListener()
         auth = Firebase.auth
-        handleBackGroundServiceForHolder()
 
-
-    }
-    private fun handleBackGroundServiceForHolder(){
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            sharedPreferences = getSharedPreferences("user_type", Context.MODE_PRIVATE)
-            userType = sharedPreferences.getString("type", "") ?: ""
-            if (userType == "Holder") {
-                Log.i("Home","Holder")
-
-                val serviceIntent = Intent(this, MyBackgroundService::class.java)
-                startService(serviceIntent)
-            }
-    }
     }
 
     private fun addNavigationBottomListener(){
@@ -86,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                         .setPositiveButton("Yes") { _, _ ->
                             sharedPreferences.edit().remove("userType").apply() // Clear the user type from the shared preference
                             auth.signOut()
+                            stopService(Intent(this, MyBackgroundService::class.java))
                             replaceFragment(loginFragment)
                         }
                         .setNegativeButton("No") { dialog, _ ->
@@ -129,15 +116,32 @@ class MainActivity : AppCompatActivity() {
             sharedPreferences = getSharedPreferences("user_type", Context.MODE_PRIVATE)
             userType = sharedPreferences.getString("type", "") ?: ""
             if (userType == "Holder") {
-                Log.i("Home","Holder")
+                Log.i("Home", "Holder")
                 replaceFragment(HolderFragment())
+                val serviceIntent = Intent(this, MyBackgroundService::class.java)
+                startService(serviceIntent)
             } else if (userType == "Relative") {
-                Log.i("Home","Relative")
+                Log.i("Home", "Relative")
                 replaceFragment(fragmentHome)
+                val serviceIntent = Intent(this, MyBackgroundService::class.java)
+                stopService(serviceIntent)
             }
-        }
-        else{
+        } else {
             replaceFragment(loginFragment)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            sharedPreferences = getSharedPreferences("user_type", Context.MODE_PRIVATE)
+            userType = sharedPreferences.getString("type", "") ?: ""
+            if (userType == "Relative") {
+                Log.i("Home", "Relative")
+                val serviceIntent = Intent(this, MyBackgroundService::class.java)
+                stopService(serviceIntent)
+            }
         }
     }
 
