@@ -31,6 +31,9 @@ class SocketManager (private val context: Context, private val listener: SocketL
         socket.on("message") { args ->
             val message = args[0].toString()
             listener.onMessageReceived(message)
+            val textToSpeechIntent = TextToSpeechService.newIntent(context, message)
+            context.startService(textToSpeechIntent)
+
             Log.e("Sara", "message 1 : $message")
         }
     }

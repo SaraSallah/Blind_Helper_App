@@ -304,7 +304,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 Manifest.permission.CALL_PHONE,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+//            Manifest.permission.ACCESS_NOTIFICATION_POLICY,
             Manifest.permission.FOREGROUND_SERVICE),
             LOCATION_PERMISSION_REQUEST_CODE
         )

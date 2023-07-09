@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 <!--    -->
 <!--    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />-->
-<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 
 
@@ -45,6 +45,10 @@
             android:enabled="true"
             android:exported="false"/>
 <!--            android:foregroundServiceType="mediaPlayback" -->
+        <service
+            android:name=".ui.TextToSpeechService"
+            android:enabled="true"
+            android:exported="false" />
 
 
 
