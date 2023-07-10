@@ -82,4 +82,12 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="AppBarStyle">
+        <item name="android:background">@color/white_300</item>
+    </style>
+
+    <style name="AppTextStyle">
+        <item name="android:background">@color/white_300</item>
+    </style>
+
 </resources>

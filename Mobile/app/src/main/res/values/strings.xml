@@ -50,4 +50,5 @@
     <string name="logout">Logout</string>
     <string name="relative_number">Relative Number</string>
     <string name="last_seen_">Last Seen :</string>
+    <string name="address">Address</string>
 </resources>
