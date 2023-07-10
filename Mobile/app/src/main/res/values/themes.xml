@@ -3,7 +3,7 @@
     <style name="Theme.SmartStick" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_100</item>
-        <item name="colorPrimaryVariant">@color/primary_300</item>
+        <item name="colorPrimaryVariant">@color/primary_200</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -73,8 +73,6 @@
         <item name="android:color">@color/primary_300</item>-->
     </style>
 
-
-
     <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="android:scaleType">centerCrop</item>
@@ -83,11 +81,11 @@
     </style>
 
     <style name="AppBarStyle">
-        <item name="android:background">@color/white_300</item>
+        <item name="android:background">@color/primary_200</item>
     </style>
 
     <style name="AppTextStyle">
-        <item name="android:background">@color/white_300</item>
+        <item name="android:textColor">@color/white_100</item>
     </style>
 
 </resources>
