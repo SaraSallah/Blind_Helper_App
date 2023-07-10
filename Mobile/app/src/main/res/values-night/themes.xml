@@ -41,6 +41,13 @@
         <item name="backgroundTint">@color/black_87</item>
     </style>
 
+    <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/black_87</item>
+        <item name="itemIconTint">@color/white_100</item>
+        <item name="itemRippleColor">@color/primary_100</item>
+        <item name="android:color">@color/primary_300</item>-->
+    </style>
+
     <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="android:scaleType">centerCrop</item>
