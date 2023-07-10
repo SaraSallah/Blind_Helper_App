@@ -21,12 +21,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(),SearchView.OnQueryT
     private lateinit var mUserRef: DatabaseReference
     private lateinit var options: FirebaseRecyclerOptions<User>
     override val TAG: String = this::class.simpleName.toString()
+
     override fun getViewBinding(): FragmentSearchBinding =
         FragmentSearchBinding.inflate(layoutInflater)
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
         addCallBacks()
+        setUpAppBar(false, "Search")
     }
 
     private fun addCallBacks() {

@@ -49,6 +49,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     @RequiresApi(Build.VERSION_CODES.P)
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
+        setUpAppBar(true, "Holder Service")
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser
