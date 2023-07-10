@@ -13,15 +13,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_profile"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             style="@style/circleImageView"
             android:layout_margin="@dimen/spacing_small"
             app:srcCompat="@drawable/default_"

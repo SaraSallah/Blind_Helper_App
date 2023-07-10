@@ -56,11 +56,11 @@
     </style>
 
     <style name="AppBarStyle">
-        <item name="android:background">@color/primary_200</item>
+        <item name="android:color">@color/primary_200</item>
     </style>
 
     <style name="AppTextStyle">
-        <item name="android:background">@color/white_100</item>
+        <item name="android:color">@color/white_100</item>
     </style>
 
 </resources>
