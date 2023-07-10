@@ -201,10 +201,11 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             })
     }
 
-    fun makeCall(conectName: String) {
+    @SuppressLint("Recycle")
+    private fun makeCall(contactName: String) {
         val contactUri = Uri.withAppendedPath(
             ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
-            Uri.encode(conectName)
+            Uri.encode(contactName)
         )
         val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
 
