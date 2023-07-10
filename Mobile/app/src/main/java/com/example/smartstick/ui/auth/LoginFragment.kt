@@ -34,6 +34,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun setUp() {
         (activity as MainActivity).hideBottomNavigationView()
         addCallBacks()
+        setUpAppBar(false, "Login")
     }
 
     private fun addCallBacks() {
