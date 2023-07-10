@@ -131,7 +131,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/sign_up"
-                android:textColor="@color/primary_400"
+                android:textColor="@color/primary_200"
                 android:textSize="@dimen/text_large"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"
