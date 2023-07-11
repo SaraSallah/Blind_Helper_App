@@ -30,11 +30,19 @@ class SocketManager (private val context: Context, private val listener: SocketL
     private fun listenForMessages() {
         socket.on("message") { args ->
             val message = args[0].toString()
+            val strings = message.trim().split(" ")
+            if ((strings.size
+                    ?: 0) >= 3
+                && strings.getOrNull(0) == "ObjectsDetected:"
+            ) {
+                val data = strings.subList(1, strings.size).joinToString(" ")
+
             listener.onMessageReceived(message)
-            val textToSpeechIntent = TextToSpeechService.newIntent(context, message)
+            val textToSpeechIntent = TextToSpeechService.newIntent(context, data)
             context.startService(textToSpeechIntent)
 
             Log.e("Sara", "message 1 : $message")
+        }
         }
     }
 
