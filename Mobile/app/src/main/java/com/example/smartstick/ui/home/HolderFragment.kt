@@ -22,6 +22,8 @@ import com.example.smartstick.MainActivity
 import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
+import com.example.smartstick.ui.SocketListener
+import com.example.smartstick.ui.SocketManager
 import com.example.smartstick.ui.tracking.LocationManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -30,16 +32,19 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.socket.client.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
+class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener, SocketListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
     private lateinit var textToSpeech: TextToSpeech
     private var mUserRef: DatabaseReference? = null
     private lateinit var mAuth: FirebaseAuth
     private var mUser: FirebaseUser? = null
+    private var socketManager: SocketManager? = null
+
 
     override val TAG: String = this::class.simpleName.toString()
 
@@ -58,14 +63,15 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
         textToSpeech = TextToSpeech(requireContext())
         { status ->
-            if (status == TextToSpeech.SUCCESS) { }
+            if (status == TextToSpeech.SUCCESS) {
+            }
         }
 
 
         addCallBacks()
     }
 
-    private fun addCallBacks(){
+    private fun addCallBacks() {
         binding.startRecord.setOnClickListener {
             voiceRecognitionManager.startListening()
         }
@@ -139,7 +145,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                     ?: 0) >= 3
                 && strings.getOrNull(0) == "اتصل"
             ) {
-
                 val wordsAfterTwo = strings.subList(2, strings.size)
                 makeCall(wordsAfterTwo.toString())
             }
@@ -150,6 +155,11 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             if (text.contains("make call", ignoreCase = true)) {
                 makeCall(requireView())
             }
+            if (text.contains("change mode", ignoreCase = true)
+            ) {
+                sendMessage()
+            }
+
             // Check if the recognized text contains a destination
             val destinationRegx = Regex(getString(R.string.navigate_to_go_to))
             val matchResult = destinationRegx.find(text.toLowerCase())
@@ -157,9 +167,17 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 val destination = matchResult.groupValues[2]
                 startNavigation(37.7749, -122.4194, "walking")
             }
+
         }
     }
 
+    private fun sendMessage(){
+        socketManager = SocketManager(requireContext(), this)
+        socketManager!!.connect()
+        socketManager!!.socket.on(Socket.EVENT_CONNECT) {
+            socketManager?.sendText("ChangeMode:")
+        }
+    }
 
 
     override fun onPartialResults(partialResults: Bundle?) {}
@@ -171,7 +189,8 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         FirebaseDatabase.getInstance().reference.child("users")
-            .child(currentUser?.uid ?: "").addListenerForSingleValueEvent(object : ValueEventListener {
+            .child(currentUser?.uid ?: "")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val number = snapshot.child("Relative Number")
 
@@ -258,7 +277,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         startActivity(intent)
     }
 
-    fun startNavigation(destination: String, mode: String) {
+    private fun startNavigation(destination: String, mode: String) {
         val directionsMode = when (mode.toLowerCase()) {
             "walking" -> "w"
             "driving" -> "d"
@@ -302,16 +321,16 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     private fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(
             requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.CALL_PHONE,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_CONTACTS,
-//            Manifest.permission.ACCESS_NOTIFICATION_POLICY,
-            Manifest.permission.FOREGROUND_SERVICE),
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.FOREGROUND_SERVICE
+            ),
             LOCATION_PERMISSION_REQUEST_CODE
         )
     }
-
 
     @RequiresApi(Build.VERSION_CODES.P)
     @Deprecated("Deprecated in Java")
@@ -356,5 +375,10 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         private val PERMISSIONS_REQUEST_CODE = 1
 
     }
+
+    override fun onMessageReceived(message: String) {
+        TODO("Not yet implemented")
+    }
+
 
 }
