@@ -58,15 +58,31 @@ class TextToSpeechService : Service(), TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val locale = Locale.getDefault()
+
             if (textToSpeech.isLanguageAvailable(locale) == TextToSpeech.LANG_AVAILABLE) {
                 textToSpeech.language = locale
             } else {
-                Log.e("Sara", "Language not available: ${locale.language}")
+                // Language not available, fallback to English or Arabic
+                val fallbackLocale = if (locale.language == "ar") {
+                    // Fallback to Arabic
+                    Locale("ar")
+                } else {
+                    // Fallback to English
+                    Locale("en")
+                }
+
+                if (textToSpeech.isLanguageAvailable(fallbackLocale) == TextToSpeech.LANG_AVAILABLE) {
+                    textToSpeech.language = fallbackLocale
+                } else {
+                    Log.e("Sara", "Fallback language not available: ${fallbackLocale.language}")
+                }
             }
         } else {
             Log.e("Sara", "TextToSpeech initialization failed")
         }
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
