@@ -18,12 +18,13 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.connection.OpenAIManager
+import com.example.connection.SocketListener
+import com.example.connection.SocketManager
 import com.example.smartstick.MainActivity
 import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
-import com.example.connection.SocketListener
-import com.example.connection.SocketManager
 import com.example.smartstick.ui.tracking.LocationManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -37,13 +38,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener, SocketListener {
+class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener,
+    SocketListener, OpenAIManager.OnOpenAIResponseListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
     private lateinit var textToSpeech: TextToSpeech
     private var mUserRef: DatabaseReference? = null
     private lateinit var mAuth: FirebaseAuth
     private var mUser: FirebaseUser? = null
     private var socketManager: SocketManager? = null
+    private lateinit var openAIManager: OpenAIManager
 
 
     override val TAG: String = this::class.simpleName.toString()
@@ -66,9 +69,15 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             if (status == TextToSpeech.SUCCESS) {
             }
         }
+        val apiKey = "YOUR_API_KEY" // Replace with your actual OpenAI API key
+        openAIManager = OpenAIManager(apiKey, this)
 
 
         addCallBacks()
+    }
+
+    private fun askQuestion(question: String) {
+        openAIManager.sendQuestion(question)
     }
 
     private fun addCallBacks() {
@@ -155,10 +164,34 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             if (text.contains("make call", ignoreCase = true)) {
                 makeCall(requireView())
             }
-            if (text.contains("change mode", ignoreCase = true)
+            if (text.contains("mode explore", ignoreCase = true)
+                ||
+                (text.contains("mod explore", ignoreCase = true))
+                ||
+                (text.contains("mood explore", ignoreCase = true))
             ) {
-                sendMessage()
+                sendMessage("explore")
             }
+            if (text.contains("mode detect", ignoreCase = true)
+                ||
+                (text.contains("mod detect", ignoreCase = true))
+                ||
+                (text.contains("mood detect", ignoreCase = true))
+            ) {
+                sendMessage("detect")
+            }
+            if (text.contains("language Arabic", ignoreCase = true)
+            ) {
+                Log.e("Sara", "before")
+                sendMessage("arabic")
+                Log.e("Sara", "after")
+
+            }
+            if (text.contains("language English", ignoreCase = true)
+            ) {
+                sendMessage("english")
+            }
+
 
             // Check if the recognized text contains a destination
             val destinationRegx = Regex(getString(R.string.navigate_to_go_to))
@@ -170,11 +203,19 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         }
     }
 
-    private fun sendMessage(){
+    private fun sendMessage(text: String) {
         socketManager = SocketManager(requireContext(), this)
         socketManager!!.connect()
         socketManager!!.socket.on(Socket.EVENT_CONNECT) {
-            socketManager?.sendText("ChangeMode:")
+            if (text == "explore") {
+                socketManager?.sendText("ChangeMode: explore")
+            } else if (text == "detect") {
+                socketManager?.sendText("ChangeMode: detect")
+            } else if (text == "arabic") {
+                socketManager?.sendText("ChangeLanguage: arabic")
+            } else if (text == "english") {
+                socketManager?.sendText("ChangeLanguage: english")
+            }
         }
     }
 
@@ -376,6 +417,14 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     }
 
     override fun onMessageReceived(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onResponse(answer: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onError(errorMessage: String) {
         TODO("Not yet implemented")
     }
 
