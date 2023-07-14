@@ -22,8 +22,8 @@ import com.example.smartstick.MainActivity
 import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
-import com.example.smartstick.ui.SocketListener
-import com.example.smartstick.ui.SocketManager
+import com.example.connection.SocketListener
+import com.example.connection.SocketManager
 import com.example.smartstick.ui.tracking.LocationManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -167,7 +167,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 val destination = matchResult.groupValues[2]
                 startNavigation(37.7749, -122.4194, "walking")
             }
-
         }
     }
 

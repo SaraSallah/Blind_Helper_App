@@ -8,7 +8,7 @@ import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentLoginBinding
-import com.example.smartstick.ui.MyBackgroundService
+import com.example.connection.MyBackgroundService
 import com.example.smartstick.ui.home.HolderFragment
 import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.utils.replaceFragment

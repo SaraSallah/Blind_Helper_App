@@ -1,4 +1,4 @@
-package com.example.smartstick.ui
+package com.example.connection
 
 interface SocketListener {
     fun onMessageReceived(message: String)

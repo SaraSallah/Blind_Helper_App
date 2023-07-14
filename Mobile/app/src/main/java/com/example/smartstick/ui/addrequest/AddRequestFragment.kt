@@ -3,12 +3,10 @@ package com.example.smartstick.ui.addrequest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentAddRequestBinding
-import com.example.smartstick.ui.SocketManager
 import com.example.smartstick.ui.tracking.MapsActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

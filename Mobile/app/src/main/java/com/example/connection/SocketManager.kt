@@ -1,11 +1,11 @@
-package com.example.smartstick.ui
+package com.example.connection
 
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import com.example.smartstick.ui.TextToSpeechService
 import io.socket.client.IO
 import io.socket.client.Socket
-import java.util.logging.Handler
 
 class SocketManager(private val context: Context, private val listener: SocketListener) {
     lateinit var socket: Socket

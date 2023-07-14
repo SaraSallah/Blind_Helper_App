@@ -41,7 +41,7 @@
         -->
 
         <service
-            android:name=".ui.MyBackgroundService"
+            android:name="com.example.connection.MyBackgroundService"
             android:enabled="true"
             android:exported="false"/>
 <!--            android:foregroundServiceType="mediaPlayback" -->

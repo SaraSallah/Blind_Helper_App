@@ -1,4 +1,4 @@
-package com.example.smartstick.ui
+package com.example.connection
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.smartstick.MainActivity
 import com.example.smartstick.R
+import com.example.smartstick.ui.TextToSpeechService
 
 class MyBackgroundService : Service(), SocketListener {
     private lateinit var socketManager: SocketManager
