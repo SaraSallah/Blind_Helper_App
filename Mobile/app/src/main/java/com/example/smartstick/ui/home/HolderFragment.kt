@@ -122,8 +122,8 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 && strings.getOrNull(0) == "go"
                 && strings.getOrNull(1) == "to"
             ) {
-                val wordsAfterTwo = strings.subList(2, strings.size)
-                startNavigation(wordsAfterTwo.toString(), "w")
+                val wordsAfterTwo = strings.subList(2, strings.size).joinToString ()
+                startNavigation(wordsAfterTwo, "w")
             }
             if ((strings.size
                     ?: 0) >= 3
@@ -192,7 +192,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             .child(currentUser?.uid ?: "")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val number = snapshot.child("Relative Number")
+                    val number = snapshot.child("Relative Number").value
 
                     // Check if the user has granted permission to make phone calls
                     if (ContextCompat.checkSelfPermission(
