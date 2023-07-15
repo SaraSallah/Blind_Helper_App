@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="200dp"
-    android:layout_marginTop="@dimen/spacing_tiny"
+    style="@style/AppBarStyle"
     android:layout_height="?actionBarSize"
-    android:background="@drawable/appbar_shape">
+    android:layout_width="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ic_logo"
@@ -23,9 +22,9 @@
         android:id="@+id/text_pageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_medium"
         style="@style/AppTextStyle"
-        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:gravity="center_horizontal"
         android:textSize="@dimen/text_giant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ic_logo"
