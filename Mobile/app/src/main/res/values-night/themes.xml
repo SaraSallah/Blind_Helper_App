@@ -66,5 +66,8 @@
     <style name="TextStyle">
         <item name="android:textColor">@color/white_100</item>
     </style>
+    <style name="logo">
+        <item name="android:src">@drawable/logo_dark</item>
+    </style>
 
 </resources>

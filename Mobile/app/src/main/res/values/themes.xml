@@ -87,6 +87,9 @@
     <style name="AppTextStyle">
         <item name="android:textColor">@color/white_100</item>
     </style>
+    <style name="logo">
+        <item name="android:src">@drawable/ic_logo</item>
+    </style>
 
     <style name="TextStyle">
         <item name="android:textColor">@color/black</item>
