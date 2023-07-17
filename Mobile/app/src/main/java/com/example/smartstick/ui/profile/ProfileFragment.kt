@@ -30,6 +30,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
+        setUpAppBar(true, "My Profile")
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser
         mUserRef = FirebaseDatabase.getInstance().getReference("users")

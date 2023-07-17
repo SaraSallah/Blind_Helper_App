@@ -18,6 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="@dimen/spacing_large"
+                style="@style/logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -131,7 +132,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/sign_up"
-                android:textColor="@color/primary_400"
+                android:textColor="@color/primary_200"
                 android:textSize="@dimen/text_large"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/do_not_have_account_tv"

@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.speech.RecognitionListener
@@ -14,8 +15,12 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.smartstick.connection.OpenAIManager
+import com.example.smartstick.connection.SocketListener
+import com.example.smartstick.connection.SocketManager
 import com.example.smartstick.MainActivity
 import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
@@ -28,24 +33,31 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.socket.client.Socket
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener {
+class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListener,
+    SocketListener, OpenAIManager.OnOpenAIResponseListener {
     private lateinit var voiceRecognitionManager: VoiceRecognitionManager
     private lateinit var textToSpeech: TextToSpeech
     private var mUserRef: DatabaseReference? = null
     private lateinit var mAuth: FirebaseAuth
     private var mUser: FirebaseUser? = null
+    private var socketManager: SocketManager? = null
+    private lateinit var openAIManager: OpenAIManager
+
 
     override val TAG: String = this::class.simpleName.toString()
 
     override fun getViewBinding(): FragmentHolderBinding =
         FragmentHolderBinding.inflate(layoutInflater)
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
+        setUpAppBar(true, "Holder Service")
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser
@@ -54,14 +66,21 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         voiceRecognitionManager = VoiceRecognitionManager(requireActivity(), this)
         textToSpeech = TextToSpeech(requireContext())
         { status ->
-            if (status == TextToSpeech.SUCCESS) { }
+            if (status == TextToSpeech.SUCCESS) {
+            }
         }
+        val apiKey = "YOUR_API_KEY" // Replace with your actual OpenAI API key
+        openAIManager = OpenAIManager(apiKey, this)
 
 
         addCallBacks()
     }
 
-    private fun addCallBacks(){
+    private fun askQuestion(question: String) {
+        openAIManager.sendQuestion(question)
+    }
+
+    private fun addCallBacks() {
         binding.startRecord.setOnClickListener {
             voiceRecognitionManager.startListening()
         }
@@ -112,8 +131,8 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 && strings.getOrNull(0) == "go"
                 && strings.getOrNull(1) == "to"
             ) {
-                val wordsAfterTwo = strings.subList(2, strings.size)
-                startNavigation(wordsAfterTwo.toString(), "w")
+                val wordsAfterTwo = strings.subList(2, strings.size).joinToString ()
+                startNavigation(wordsAfterTwo, "w")
             }
             if ((strings.size
                     ?: 0) >= 3
@@ -135,7 +154,6 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                     ?: 0) >= 3
                 && strings.getOrNull(0) == "اتصل"
             ) {
-
                 val wordsAfterTwo = strings.subList(2, strings.size)
                 makeCall(wordsAfterTwo.toString())
             }
@@ -146,6 +164,35 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             if (text.contains("make call", ignoreCase = true)) {
                 makeCall(requireView())
             }
+            if (text.contains("mode explore", ignoreCase = true)
+                ||
+                (text.contains("mod explore", ignoreCase = true))
+                ||
+                (text.contains("mood explore", ignoreCase = true))
+            ) {
+                sendMessage("explore")
+            }
+            if (text.contains("mode detect", ignoreCase = true)
+                ||
+                (text.contains("mod detect", ignoreCase = true))
+                ||
+                (text.contains("mood detect", ignoreCase = true))
+            ) {
+                sendMessage("detect")
+            }
+            if (text.contains("language Arabic", ignoreCase = true)
+            ) {
+                Log.e("Sara", "before")
+                sendMessage("arabic")
+                Log.e("Sara", "after")
+
+            }
+            if (text.contains("language English", ignoreCase = true)
+            ) {
+                sendMessage("english")
+            }
+
+
             // Check if the recognized text contains a destination
             val destinationRegx = Regex(getString(R.string.navigate_to_go_to))
             val matchResult = destinationRegx.find(text.toLowerCase())
@@ -156,6 +203,21 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         }
     }
 
+    private fun sendMessage(text: String) {
+        socketManager = SocketManager(requireContext(), this)
+        socketManager!!.connect()
+        socketManager!!.socket.on(Socket.EVENT_CONNECT) {
+            if (text == "explore") {
+                socketManager?.sendText("ChangeMode: explore")
+            } else if (text == "detect") {
+                socketManager?.sendText("ChangeMode: detect")
+            } else if (text == "arabic") {
+                socketManager?.sendText("ChangeLanguage: arabic")
+            } else if (text == "english") {
+                socketManager?.sendText("ChangeLanguage: english")
+            }
+        }
+    }
 
 
     override fun onPartialResults(partialResults: Bundle?) {}
@@ -167,9 +229,10 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         FirebaseDatabase.getInstance().reference.child("users")
-            .child(currentUser?.uid ?: "").addListenerForSingleValueEvent(object : ValueEventListener {
+            .child(currentUser?.uid ?: "")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val number = snapshot.child("Relative Number")
+                    val number = snapshot.child("Relative Number").value
 
                     // Check if the user has granted permission to make phone calls
                     if (ContextCompat.checkSelfPermission(
@@ -197,10 +260,11 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             })
     }
 
-    fun makeCall(conectName: String) {
+    @SuppressLint("Recycle")
+    private fun makeCall(contactName: String) {
         val contactUri = Uri.withAppendedPath(
             ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
-            Uri.encode(conectName)
+            Uri.encode(contactName)
         )
         val projection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
 
@@ -253,7 +317,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         startActivity(intent)
     }
 
-    fun startNavigation(destination: String, mode: String) {
+    private fun startNavigation(destination: String, mode: String) {
         val directionsMode = when (mode.toLowerCase()) {
             "walking" -> "w"
             "driving" -> "d"
@@ -276,6 +340,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         return "Date: $date\nTime: $time"
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun startLocationService() {
         if (isLocationPermissionGranted()) {
             val intent = Intent(requireContext(), LocationManager::class.java)
@@ -292,18 +357,22 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(
             requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.CALL_PHONE,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.READ_CONTACTS),
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.FOREGROUND_SERVICE
+            ),
             LOCATION_PERMISSION_REQUEST_CODE
         )
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.P)
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -346,5 +415,18 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
         private val PERMISSIONS_REQUEST_CODE = 1
 
     }
+
+    override fun onMessageReceived(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onResponse(answer: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onError(errorMessage: String) {
+        TODO("Not yet implemented")
+    }
+
 
 }

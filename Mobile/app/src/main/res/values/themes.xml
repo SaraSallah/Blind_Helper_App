@@ -3,7 +3,7 @@
     <style name="Theme.SmartStick" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_100</item>
-        <item name="colorPrimaryVariant">@color/primary_300</item>
+        <item name="colorPrimaryVariant">@color/primary_200</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -56,15 +56,21 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
-    <style name="AppTheme.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primary_300</item>
-        <item name="background">@color/primary_100</item>
-        <item name="itemTextColor">@color/white_100</item>
-
-    </style>
+    <!--    <style name="AppTheme.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">-->
+    <!--        <item name="android:color">@color/primary_300</item>-->
+    <!--        <item name="background">@color/primary_100</item>-->
+    <!--        <item name="itemTextColor">@color/white_100</item>-->
+    <!--    </style>-->
 
     <style name="bottomNavigation" parent="">
         <item name="backgroundTint">@color/white_100</item>
+    </style>
+
+    <style name="AppBottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/white_100</item>
+        <item name="itemRippleColor">@color/primary_100</item>
+        <item name="android:color">@color/primary_300</item>-->
     </style>
 
     <style name="roundedImageView">
@@ -72,6 +78,21 @@
         <item name="android:scaleType">centerCrop</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="AppBarStyle">
+        <item name="android:background">@color/primary_200</item>
+    </style>
+
+    <style name="AppTextStyle">
+        <item name="android:textColor">@color/white_100</item>
+    </style>
+    <style name="logo">
+        <item name="android:src">@drawable/ic_logo</item>
+    </style>
+
+    <style name="TextStyle">
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>

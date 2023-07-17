@@ -35,7 +35,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun setUp() {
         (activity as MainActivity).showBottomNavigationView()
-//        startLocationService()
+        setUpAppBar(true, "My Holders")
+
         friendRef = FirebaseDatabase.getInstance().getReference("Friends")
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!

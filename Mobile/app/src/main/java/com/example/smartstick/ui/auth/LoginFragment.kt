@@ -2,11 +2,13 @@ package com.example.smartstick.ui.auth
 
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.example.smartstick.MainActivity
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentLoginBinding
+import com.example.smartstick.connection.MyBackgroundService
 import com.example.smartstick.ui.home.HolderFragment
 import com.example.smartstick.ui.home.HomeFragment
 import com.example.smartstick.utils.replaceFragment
@@ -32,6 +34,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun setUp() {
         (activity as MainActivity).hideBottomNavigationView()
         addCallBacks()
+        setUpAppBar(false, "Login")
     }
 
     private fun addCallBacks() {
@@ -54,13 +57,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful ) {
-                    if( userType =="Holder"){
-                        Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
+                    val serviceIntent = Intent(requireContext(), MyBackgroundService::class.java)
+
+                    if (userType == "Holder") {
                         replaceFragment(holderFragment)
-                    }
-                    else if( userType =="Relative"){
-                        Toast.makeText(requireContext(), "Success" , Toast.LENGTH_LONG).show()
+                        requireContext().startService(serviceIntent)
+                    } else if (userType == "Relative") {
                         replaceFragment(homeRelativeFragment)
+                        requireContext().stopService(serviceIntent)
+
                     }
                 }
 
@@ -105,12 +110,3 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
 }
-
-//    private fun navigateToFragment() {
-//        val userType = sharedPrefs.getString("userType", "")
-//        if (userType == "relative") {
-//            replaceFragment(HomeFragment())
-//        } else if (userType == "holder") {
-//            replaceFragment(HolderFragment())
-//        }
-//    }

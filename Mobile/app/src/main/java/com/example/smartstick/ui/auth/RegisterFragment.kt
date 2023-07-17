@@ -30,6 +30,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     override fun setUp() {
         (activity as MainActivity).hideBottomNavigationView()
         addCallBacks()
+        setUpAppBar(false, "Sign Up")
     }
 
     private fun addCallBacks() {

@@ -35,6 +35,8 @@ class AddRequestFragment : BaseFragment<FragmentAddRequestBinding>() {
         addCallBacks()
         checkUserExistence(userID)
         getLocation(userID)
+        setUpAppBar(true, "Add Request")
+
     }
 
     private fun addCallBacks(){
