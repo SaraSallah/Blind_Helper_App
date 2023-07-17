@@ -417,15 +417,12 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
     }
 
     override fun onMessageReceived(message: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onResponse(answer: String) {
-        TODO("Not yet implemented")
     }
 
     override fun onError(errorMessage: String) {
-        TODO("Not yet implemented")
     }
 
 

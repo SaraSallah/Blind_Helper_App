@@ -15,7 +15,7 @@ class SocketManager(private val context: Context, private val listener: SocketLi
         try {
             val options = IO.Options()
             options.forceNew = true
-            socket = IO.socket("http://10.0.0.1:5000", options)
+            socket = IO.socket("https://lingtr.onrender.com/", options)
             socket.connect()
             listenForMessages()
             setupEventHandlers()
@@ -43,8 +43,9 @@ class SocketManager(private val context: Context, private val listener: SocketLi
     private fun listenForMessages() {
         socket.on("message") { args ->
             val message = args[0].toString()
+
             val strings = message.trim().split(" ")
-            if ((strings.size ?: 0) >= 3
+            if ((strings.size ?: 0) >= 1
                 && strings.getOrNull(0) == "Stream:"
             ) {
                 val data = strings.subList(1, strings.size).joinToString(" ")
