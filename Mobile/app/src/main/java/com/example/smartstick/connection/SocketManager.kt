@@ -15,7 +15,7 @@ class SocketManager(private val context: Context, private val listener: SocketLi
         try {
             val options = IO.Options()
             options.forceNew = true
-            socket = IO.socket("https://lingtr.onrender.com/", options)
+            socket = IO.socket("http://10.0.0.1:5000", options)
             socket.connect()
             listenForMessages()
             setupEventHandlers()
