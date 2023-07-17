@@ -18,11 +18,11 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.smartstick.MainActivity
+import com.example.smartstick.R
 import com.example.smartstick.connection.OpenAIManager
 import com.example.smartstick.connection.SocketListener
 import com.example.smartstick.connection.SocketManager
-import com.example.smartstick.MainActivity
-import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment
 import com.example.smartstick.databinding.FragmentHolderBinding
 import com.example.smartstick.ui.tracking.LocationManager
@@ -172,11 +172,20 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             ) {
                 sendMessage("explore")
             }
+            if (text.contains("وضع الاستكشاف", ignoreCase = true)
+            ) {
+                sendMessage("explore")
+            }
             if (text.contains("mode detect", ignoreCase = true)
                 ||
                 (text.contains("mod detect", ignoreCase = true))
                 ||
                 (text.contains("mood detect", ignoreCase = true))
+            ) {
+                sendMessage("detect")
+            }
+            if (text.contains("الوضع العادى", ignoreCase = true)
+
             ) {
                 sendMessage("detect")
             }
@@ -187,7 +196,18 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 Log.e("Sara", "after")
 
             }
+            if (text.contains("اللغة الانجليزية", ignoreCase = true)
+            ) {
+                Log.e("Sara", "before")
+                sendMessage("arabic")
+                Log.e("Sara", "after")
+
+            }
             if (text.contains("language English", ignoreCase = true)
+            ) {
+                sendMessage("english")
+            }
+            if (text.contains("اللغة العربية", ignoreCase = true)
             ) {
                 sendMessage("english")
             }
