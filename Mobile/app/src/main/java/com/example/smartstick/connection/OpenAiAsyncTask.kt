@@ -1,4 +1,4 @@
-package com.example.connection
+package com.example.smartstick.connection
 
 import android.os.AsyncTask
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

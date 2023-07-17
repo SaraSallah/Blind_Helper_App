@@ -1,4 +1,4 @@
-package com.example.connection
+package com.example.smartstick.connection
 
 import android.app.Notification
 import android.app.NotificationChannel

@@ -18,9 +18,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.connection.OpenAIManager
-import com.example.connection.SocketListener
-import com.example.connection.SocketManager
+import com.example.smartstick.connection.OpenAIManager
+import com.example.smartstick.connection.SocketListener
+import com.example.smartstick.connection.SocketManager
 import com.example.smartstick.MainActivity
 import com.example.smartstick.R
 import com.example.smartstick.data.base.BaseFragment

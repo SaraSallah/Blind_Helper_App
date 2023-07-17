@@ -24,7 +24,7 @@
         style="@style/AppTextStyle"
         android:layout_marginStart="@dimen/spacing_medium"
         android:gravity="center_horizontal"
-        android:textSize="@dimen/text_giant"
+        android:textSize="@dimen/text_Xgiant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ic_logo"
         app:layout_constraintTop_toTopOf="parent"

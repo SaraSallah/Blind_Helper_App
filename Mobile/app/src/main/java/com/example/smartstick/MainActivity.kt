@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.smartstick.databinding.ActivityMainBinding
-import com.example.connection.MyBackgroundService
+import com.example.smartstick.connection.MyBackgroundService
 import com.example.smartstick.ui.auth.LoginFragment
 import com.example.smartstick.ui.home.HolderFragment
 import com.example.smartstick.ui.home.HomeFragment
