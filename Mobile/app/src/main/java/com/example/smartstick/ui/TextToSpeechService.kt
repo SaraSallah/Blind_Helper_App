@@ -50,8 +50,9 @@ class TextToSpeechService : Service(), TextToSpeech.OnInitListener {
 
     private fun speakText(text: String) {
         Log.d("Sara", "Speaking text: $text")
-        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null)
-        Log.d("Sara", "Speaking text 2 : $text")
+        val params = HashMap<String, String>()
+        params[TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID] = "speechUtterance"
+        textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, params)
 
     }
 
