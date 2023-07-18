@@ -184,7 +184,7 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             ) {
                 sendMessage("detect")
             }
-            if (text.contains("الوضع العادى", ignoreCase = true)
+            if (text.contains("الوضع العادي", ignoreCase = true)
 
             ) {
                 sendMessage("detect")
@@ -196,10 +196,10 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
                 Log.e("Sara", "after")
 
             }
-            if (text.contains("اللغة الانجليزية", ignoreCase = true)
+            if (text.contains("اللغه الانجليزيه", ignoreCase = true)
             ) {
                 Log.e("Sara", "before")
-                sendMessage("arabic")
+                sendMessage("english")
                 Log.e("Sara", "after")
 
             }
@@ -207,9 +207,9 @@ class HolderFragment : BaseFragment<FragmentHolderBinding>(), RecognitionListene
             ) {
                 sendMessage("english")
             }
-            if (text.contains("اللغة العربية", ignoreCase = true)
+            if (text.contains("اللغه العربيه", ignoreCase = true)
             ) {
-                sendMessage("english")
+                sendMessage("arabic")
             }
 
 
