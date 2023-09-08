@@ -1,1 +1,1 @@
-# Smart-stick-for-blind-people
+# Blind_Helper_App
